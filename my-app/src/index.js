@@ -7,6 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {deepOrange500} from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import FontIcon from 'material-ui/FontIcon';
 
 import './index.css';
 import App from './App';
@@ -39,9 +40,21 @@ const muiTheme = getMuiTheme({
 const App2 = () => (
     <div>
         <ResponsiveDrawer>
-            <MenuItem><Link to='/'>Home</Link></MenuItem>
-            <MenuItem><Link to='/roster'>Roster</Link></MenuItem>
-            <MenuItem><Link to='/schedule'>Schedule</Link></MenuItem>
+            <MenuItem 
+                containerElement={<Link to='/'/>} 
+                primaryText="Home" 
+                leftIcon={<FontIcon className="material-icons">people</FontIcon>}
+                />
+            <MenuItem 
+                containerElement={<Link to='/roster'/>}
+                primaryText="Roster" 
+                leftIcon={<FontIcon className="material-icons">people</FontIcon>}
+                />
+            <MenuItem 
+                containerElement={<Link to='/schedule'/>}
+                primaryText="Schedule" 
+                leftIcon={<FontIcon className="material-icons">people</FontIcon>}
+                />
         </ResponsiveDrawer>
         <BodyContainer>
             <Switch>
