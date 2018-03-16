@@ -26,7 +26,10 @@
     <Content Include="my-app\public\index.html" />
     <Content Include="my-app\public\favicon.ico" />
     <Content Include="my-app\public\manifest.json" />
-    <Compile Include="my-app\iisConfig\copyIisConfig.js">
+    <Compile Include="my-app\src\iisConfig\copyIisConfig.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="my-app\src\iisConfig\web.config">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="my-app\src\App.test.js" />
@@ -48,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="my-app" />
-    <Folder Include="my-app\iisConfig\" />
+    <Folder Include="my-app\src\iisConfig\" />
     <Folder Include="my-app\public" />
     <Folder Include="my-app\src" />
     <Folder Include="my-app\src\components" />
