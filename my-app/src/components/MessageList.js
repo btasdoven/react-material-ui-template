@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import Paper from 'material-ui/Paper';
-import '../styles/SimpleCard.css'
+import firebase from '../firebase';
+import _ from 'lodash';
+import '../styles/MessageList.css'
 
-class SimpleCard extends Component {
+class MessageList extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -46,8 +45,6 @@ class SimpleCard extends Component {
   }
 
   render() {
-    const bull = <span class="bullet">•</span>;
-
     return (
       <div>
         <Card class="card">
@@ -74,4 +71,4 @@ class SimpleCard extends Component {
   }
 }
 
-export default SimpleCard;
+export default MessageList;

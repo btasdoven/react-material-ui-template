@@ -3,10 +3,9 @@
  * which incorporates components provided by Material-UI.
  */
 import React, { Component } from 'react';
-import { withStyles } from 'material-ui/styles';
 import Table, { TableBody, TableRowColumn, TableHeader, TableHeaderColumn, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
-import firebase from './firebase';
+import firebase from '../firebase';
 import _ from 'lodash';
 
 class DietitianList extends Component {
