@@ -1,0 +1,2 @@
+C:\Users\Batuhan\source\repos\react-material-ui-template\obj\Debug\my-app.njsproj.CoreCompileInputs.cache
+C:\Users\Batuhan\source\repos\react-material-ui-template\bin\Microsoft.NodejsTools.WebRole.dll

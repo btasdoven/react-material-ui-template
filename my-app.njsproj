@@ -6,7 +6,8 @@
     <ProjectGuid>{3639bf09-9015-45d1-bd96-95d23dc65369}</ProjectGuid>
     <ProjectHome />
     <ProjectView>ShowAllFiles</ProjectView>
-    <StartupFile />
+    <StartupFile>
+    </StartupFile>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
@@ -14,52 +15,56 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>my-app</Name>
     <NameOfLastUsedPublishProfile>diyetkocumportal - Web Deploy</NameOfLastUsedPublishProfile>
+    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
     <None Include="diyetkocumportal - Web Deploy.pubxml" />
-    <Content Include="my-app\jsconfig.json" />
-    <Content Include="my-app\package-lock.json" />
-    <Content Include="my-app\package.json" />
-    <Content Include="my-app\README.md" />
-    <Content Include="my-app\public\index.html" />
-    <Content Include="my-app\public\favicon.ico" />
-    <Content Include="my-app\public\manifest.json" />
-    <Compile Include="my-app\src\iisConfig\copyIisConfig.js">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="my-app\src\iisConfig\web.config">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="my-app\src\App.test.js" />
-    <Compile Include="my-app\src\firebase.js" />
-    <Compile Include="my-app\src\index.js" />
-    <Compile Include="my-app\src\registerServiceWorker.js" />
-    <Compile Include="my-app\src\components\App.js" />
-    <Compile Include="my-app\src\components\DietitianList.js" />
-    <Compile Include="my-app\src\components\LoginPage.js" />
-    <Compile Include="my-app\src\components\Main.js" />
-    <Compile Include="my-app\src\components\MessageList.js" />
-    <Compile Include="my-app\src\components\UserList.1.js" />
-    <Compile Include="my-app\src\components\UserList.js" />
-    <Compile Include="my-app\src\reducers\index.js" />
-    <Content Include="my-app\src\styles\App.css" />
-    <Content Include="my-app\src\styles\index.css" />
-    <Content Include="my-app\src\styles\MessageList.css" />
-    <Compile Include="my-app\src\components\SmartTable\sortFunc.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="my-app" />
-    <Folder Include="my-app\src\iisConfig\" />
-    <Folder Include="my-app\public" />
-    <Folder Include="my-app\src" />
-    <Folder Include="my-app\src\components" />
-    <Folder Include="my-app\src\components\SmartTable" />
-    <Folder Include="my-app\src\components\SmartTableRow" />
-    <Folder Include="my-app\src\components\TableSpinner" />
-    <Folder Include="my-app\src\reducers" />
-    <Folder Include="my-app\src\styles" />
+    <Folder Include="public\" />
+    <Folder Include="src\" />
+    <Folder Include="src\components\" />
+    <Folder Include="src\components\SmartTableRow\" />
+    <Folder Include="src\components\SmartTable\" />
+    <Folder Include="src\components\TableSpinner\" />
+    <Folder Include="src\reducers\" />
+    <Folder Include="src\styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\App.test.js" />
+    <Compile Include="src\components\App.js" />
+    <Compile Include="src\components\DietitianList.js" />
+    <Compile Include="src\components\LoginPage.js" />
+    <Compile Include="src\components\Main.js" />
+    <Compile Include="src\components\MessageList.js" />
+    <Compile Include="src\components\SmartTableRow\formatTableCell.jsx" />
+    <Compile Include="src\components\SmartTableRow\SmartTableRow.jsx" />
+    <Compile Include="src\components\SmartTable\SmartTable.jsx" />
+    <Compile Include="src\components\SmartTable\sortFunc.js" />
+    <Compile Include="src\components\TableSpinner\TableSpinner.jsx" />
+    <Compile Include="src\components\UserList.1.js" />
+    <Compile Include="src\components\UserList.js" />
+    <Compile Include="src\firebase.js" />
+    <Compile Include="src\index.js" />
+    <Compile Include="src\reducers\index.js" />
+    <Compile Include="src\registerServiceWorker.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="index.html" />
+    <Content Include="jsconfig.json" />
+    <Content Include="package-lock.json" />
+    <Content Include="package.json" />
+    <Content Include="public\favicon.ico" />
+    <Content Include="public\index.html" />
+    <Content Include="public\manifest.json" />
+    <Content Include="src\components\SmartTable\SmartTable.scss" />
+    <Content Include="src\styles\App.css" />
+    <Content Include="src\styles\index.css" />
+    <Content Include="src\styles\MessageList.css" />
+    <Content Include="src\styles\UserList.scss" />
+    <Content Include="web.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
