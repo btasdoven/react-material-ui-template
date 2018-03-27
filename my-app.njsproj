@@ -23,6 +23,11 @@
     <None Include="diyetkocumportal - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="build\" />
+    <Folder Include="build\static\" />
+    <Folder Include="build\static\css\" />
+    <Folder Include="build\static\js\" />
+    <Folder Include="build\static\media\" />
     <Folder Include="public\" />
     <Folder Include="src\" />
     <Folder Include="src\components\" />
@@ -33,6 +38,8 @@
     <Folder Include="src\styles\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="build\service-worker.js" />
+    <Compile Include="build\static\js\main.1cddb807.js" />
     <Compile Include="src\App.test.js" />
     <Compile Include="src\components\App.js" />
     <Compile Include="src\components\DietitianList.js" />
@@ -47,12 +54,20 @@
     <Compile Include="src\components\UserList.1.js" />
     <Compile Include="src\components\UserList.js" />
     <Compile Include="src\firebase.js" />
-    <Compile Include="src\index.js" />
+    <Compile Include="src\components\index.js" />
     <Compile Include="src\reducers\index.js" />
     <Compile Include="src\registerServiceWorker.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="index.html" />
+    <Content Include="build\asset-manifest.json" />
+    <Content Include="build\favicon.ico" />
+    <Content Include="build\index.html" />
+    <Content Include="build\manifest.json" />
+    <Content Include="build\static\css\main.385da972.css" />
+    <Content Include="build\static\css\main.385da972.css.map" />
+    <Content Include="build\static\js\main.1cddb807.js.map" />
+    <Content Include="build\static\media\SmartTable.d576769e.scss" />
+    <Content Include="build\static\media\UserList.6806237a.scss" />
     <Content Include="jsconfig.json" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
