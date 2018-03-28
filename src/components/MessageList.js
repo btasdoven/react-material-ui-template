@@ -139,7 +139,7 @@ class MessageList extends Component {
 
         return (
           <div key={msgKey}>
-            [{timeSince(new Date(timestampToInt(msg.timestamp)*1000))}][{users[msg.fromId] ? users[msg.fromId].name : ""}] {msg.content}
+            {msg.isSeen ? "[Okundu]" : ""}[{timeSince(new Date(timestampToInt(msg.timestamp)*1000))}][{users[msg.fromId] ? users[msg.fromId].name : ""}] {msg.content}
           </div>
         )}
       );
