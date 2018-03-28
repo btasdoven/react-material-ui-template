@@ -153,11 +153,12 @@ class MessageList extends Component {
 
       return (
         <Card key={key} className="card">
-          <CardHeader className="title"
+          <CardHeader 
                           title={u1.name + " - " + u2.name}
                           subtitle={msgContents[msgContents.length-1]}
                           actAsExpander={true}
                           showExpandableButton={true}
+                          avatar={u2.profileImageUrl || u1.profileImageUrl}
                       />
           <CardText expandable={true}>
             {msgContents}
@@ -201,7 +202,7 @@ function timeSince(date) {
   }
   interval = Math.floor(seconds / 60);
   if (interval > 1) {
-    return interval + " dakıka önce";
+    return interval + " dakika önce";
   }
   return Math.floor(seconds) + " saniye önce";
 }

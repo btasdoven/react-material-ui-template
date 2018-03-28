@@ -43,7 +43,6 @@
     <Compile Include="src\App.test.js" />
     <Compile Include="src\components\App.js" />
     <Compile Include="src\components\DietitianList.js" />
-    <Compile Include="src\components\LoginPage.js" />
     <Compile Include="src\components\Main.js" />
     <Compile Include="src\components\MessageList.js" />
     <Compile Include="src\components\SmartTableRow\formatTableCell.jsx" />
@@ -54,7 +53,7 @@
     <Compile Include="src\components\UserList.1.js" />
     <Compile Include="src\components\UserList.js" />
     <Compile Include="src\firebase.js" />
-    <Compile Include="src\components\index.js" />
+    <Compile Include="src\index.js" />
     <Compile Include="src\reducers\index.js" />
     <Compile Include="src\registerServiceWorker.js" />
   </ItemGroup>
