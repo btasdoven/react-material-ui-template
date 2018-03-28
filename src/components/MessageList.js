@@ -1,74 +1,209 @@
 import React, { Component } from 'react';
-import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { firebase, firebaseConnect, populate } from 'react-redux-firebase'
+import {Card, CardTitle, CardText, CardHeader, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import firebase from '../firebase';
-import _ from 'lodash';
+import TextField from 'material-ui/TextField';
 import '../styles/MessageList.css'
 
-class MessageList extends Component {
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.state  = {
-      chats: []
-    }
-
-    firebase.database().ref('chats').once('value', snapshot => {
-      this.getData(snapshot.val());
+const enhance = compose(
+  firebaseConnect([
+    { path: 'chats' },
+    { path: 'messages' },
+    { path: 'users' },
+    { path: 'dietitians' },
+  ]),
+  connect(({ firebase }) => ({
+      chats: firebase.data.chats,
+      messages: firebase.data.messages,
+      users: firebase.data.users,
+      dietitians: firebase.data.dietitians,
     })
+  )
+);
+
+function timestampToInt(ts){
+  var t = parseInt(ts) || 0;
+
+  if (t < 1485592994) {
+    return t*10;
   }
 
-  getValue(val, def) {
-    return val !== undefined ? val : def;
+  return t;
+}
+
+class ChatSendMessage extends React.PureComponent {
+
+  constructor(props) {
+    super(props)
+
+    this.sendMessage = this.sendMessage.bind(this);
+    this.updateInputValue = this.updateInputValue.bind(this);
+
+    this.state = { inputs: {}};
   }
 
-  getData(values){
-    let messagesVal = values;
-    let messages = _(messagesVal)
-                      .keys()
-                      .map(messageKey => {
-                          let cloned = _.clone(messagesVal[messageKey]);
-                          cloned.key = messageKey;
-                          cloned.information = this.getValue(cloned.information, {});
-                          cloned.information.gender = this.getValue(cloned.information.gender, "");
-                          cloned.information.height = this.getValue(cloned.information.height, "");
-                          cloned.information.weight = this.getValue(cloned.information.weight, "");
-                          cloned.appVersion = this.getValue(cloned.appVersion, "");
+  sendMessage(evt, chatKey) {
+    var toId = this.props.chats[chatKey].dietitianId == "chatfeedback"
+      ? this.props.chats[chatKey].userId
+      : this.props.chats[chatKey].dietitianId;
 
-                          return cloned;
-                      })
-                      .value();
-      this.setState({
-        messages: messages
-      });
+    this.props.firebase.push(`/messages/${chatKey}`, {
+      type: "text",
+      content: this.state.inputs[chatKey],
+      isSeen: false,
+      timestamp: parseInt(new Date().getTime()/1000),
+      toId: toId,
+      fromId: 'chatfeedback'
+    });
+
+    this.state.inputs[chatKey] = "";
+    this.setState(this.state);
+  }
+
+  updateInputValue(key, {target}) {
+    this.setState(({inputs}) => {
+      inputs[key] = target.value;
+      return inputs;
+    });
   }
 
   render() {
     return (
       <div>
-        <Card class="card">
-          <CardHeader
-            title="Without Avatar"
-            subtitle="Subtitle"
-            actAsExpander={false}
-            showExpandableButton={false}
-            />
-          <CardTitle class="title" title="Card title" subtitle="Card subtitle" />
-          <CardText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-          </CardText>
-          <CardActions>
-            <FlatButton label="Action1" />
-            <FlatButton label="Action2" />
-          </CardActions>
-        </Card>
+        <TextField
+          hintText="Mesaj yaz" 
+          value={this.state.inputs[this.props.chatKey] || ""}
+          onChange={this.updateInputValue.bind(this, this.props.chatKey)}/>
+        <FlatButton label="Gönder" onClick={(evt) => this.sendMessage(evt, this.props.chatKey)}/>
       </div>
     );
   }
 }
 
-export default MessageList;
+class MessageList extends Component {
+
+  constructor(props) {
+      super(props);
+  }
+
+  sendMessage(evt, chatKey) {
+    var toId = this.props.chats[chatKey].dietitianId == "chatfeedback"
+      ? this.props.chats[chatKey].userId
+      : this.props.chats[chatKey].dietitianId;
+
+    this.props.firebase.push(`/messages/${chatKey}`, {
+      type: "text",
+      content: this.state.inputs[chatKey],
+      isSeen: false,
+      timestamp: parseInt(new Date().getTime()/1000),
+      toId: toId,
+      fromId: 'chatfeedback'
+    });
+  }
+
+  render() {
+    var chats = this.props.chats;
+    var messages = this.props.messages;
+    var users = this.props.users;
+    var dietitians = this.props.dietitians;
+
+    if (chats === undefined || messages === undefined || users === undefined || dietitians === undefined) {
+      return (<article>wait</article>);
+    }
+
+    var chatKeys = Object.keys(chats).filter((k) => {
+      return k in messages;
+    });
+    
+    chatKeys.sort(function(l, r) {
+      var lvList = Object.keys(messages[l]).map(k => timestampToInt(messages[l][k].timestamp)).sort();
+      var rvList = Object.keys(messages[r]).map(k => timestampToInt(messages[r][k].timestamp)).sort();
+      var lv = lvList[lvList.length-1];
+      var rv = rvList[rvList.length-1];
+      return rv - lv;
+    });
+
+    const cards = chatKeys.map(key => {
+      if (!(key in messages)) {
+        return;
+      }
+
+      var msgContents = Object.keys(messages[key]).sort(function(l,r) {
+        var lv = timestampToInt(messages[key][l].timestamp);
+        var rv = timestampToInt(messages[key][r].timestamp);
+        return lv > rv;
+      }).map(msgKey => {
+        const msg = messages[key][msgKey];
+
+        return (
+          <div key={msgKey}>
+            [{timeSince(new Date(timestampToInt(msg.timestamp)*1000))}][{users[msg.fromId] ? users[msg.fromId].name : ""}] {msg.content}
+          </div>
+        )}
+      );
+
+      if (msgContents == null || msgContents.length == 0) {
+        return;
+      }
+
+      var u1 = dietitians[chats[key].dietitianId] || users[chats[key].dietitianId];
+      var u2 = dietitians[chats[key].userId] || users[chats[key].userId];
+
+      return (
+        <Card key={key} className="card">
+          <CardHeader className="title"
+                          title={u1.name + " - " + u2.name}
+                          subtitle={msgContents[msgContents.length-1]}
+                          actAsExpander={true}
+                          showExpandableButton={true}
+                      />
+          <CardText expandable={true}>
+            {msgContents}
+          </CardText>
+          <CardActions expandable={true}>
+            <ChatSendMessage
+              chatKey={key} firebase={this.props.firebase} chats={this.props.chats}
+              />
+          </CardActions>
+        </Card>
+      );
+    });
+
+    return (
+      <div>
+        {cards}
+      </div>
+    );
+  }
+}
+
+function timeSince(date) {
+  var seconds = Math.floor((new Date() - date) / 1000);
+
+  var interval = Math.floor(seconds / 31536000);
+
+  if (interval > 1) {
+    return interval + " yıl önce";
+  }
+  interval = Math.floor(seconds / 2592000);
+  if (interval > 1) {
+    return interval + " ay önce";
+  }
+  interval = Math.floor(seconds / 86400);
+  if (interval > 1) {
+    return interval + " gün önce";
+  }
+  interval = Math.floor(seconds / 3600);
+  if (interval > 1) {
+    return interval + " saat önce";
+  }
+  interval = Math.floor(seconds / 60);
+  if (interval > 1) {
+    return interval + " dakıka önce";
+  }
+  return Math.floor(seconds) + " saniye önce";
+}
+
+export default enhance(MessageList)

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter } from 'react-router-dom';
+import { HashRouter, BrowserRouter } from 'react-router-dom';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {deepOrange500} from 'material-ui/styles/colors';
@@ -59,9 +59,9 @@ const muiTheme = getMuiTheme({
 ReactDOM.render((
     <Provider store={store}>
         <MuiThemeProvider muiTheme={muiTheme}>
-            <HashRouter>
+            <BrowserRouter>
                 <App />
-            </HashRouter>
+            </BrowserRouter>
         </MuiThemeProvider>
     </Provider>
 ), document.getElementById('root'))

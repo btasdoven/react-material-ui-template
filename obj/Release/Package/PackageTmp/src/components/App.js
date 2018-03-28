@@ -24,7 +24,7 @@ class App extends Component {
                   />
               <MenuItem 
                   containerElement={<Link to='/schedule'/>}
-                  primaryText="LoginPage" 
+                  primaryText="Mesajlar" 
                   leftIcon={<FontIcon className="material-icons">people</FontIcon>}
                   />
               <MenuItem 
@@ -39,7 +39,7 @@ class App extends Component {
                   />
               <MenuItem 
                   containerElement={<Link to='/messages'/>}
-                  primaryText="Mesajlar" 
+                  primaryText="Test" 
                   leftIcon={<FontIcon className="material-icons">people</FontIcon>}
                   />
           </ResponsiveDrawer>

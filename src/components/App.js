@@ -23,8 +23,8 @@ class App extends Component {
                   leftIcon={<FontIcon className="material-icons">people</FontIcon>}
                   />
               <MenuItem 
-                  containerElement={<Link to='/schedule'/>}
-                  primaryText="LoginPage" 
+                  containerElement={<Link to='/messages'/>}
+                  primaryText="Mesajlar" 
                   leftIcon={<FontIcon className="material-icons">people</FontIcon>}
                   />
               <MenuItem 
@@ -38,8 +38,8 @@ class App extends Component {
                   leftIcon={<FontIcon className="material-icons">people</FontIcon>}
                   />
               <MenuItem 
-                  containerElement={<Link to='/messages'/>}
-                  primaryText="Mesajlar" 
+                  containerElement={<Link to='/schedule'/>}
+                  primaryText="Test" 
                   leftIcon={<FontIcon className="material-icons">people</FontIcon>}
                   />
           </ResponsiveDrawer>
