@@ -5,6 +5,7 @@ import { firebase, firebaseConnect, populate } from 'react-redux-firebase'
 import {Card, CardTitle, CardText, CardHeader, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import CircularProgress from 'material-ui/CircularProgress';
 import '../styles/MessageList.css'
 
 const enhance = compose(
@@ -39,12 +40,17 @@ class ChatSendMessage extends React.PureComponent {
     super(props)
 
     this.sendMessage = this.sendMessage.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.updateInputValue = this.updateInputValue.bind(this);
 
     this.state = { inputs: {}};
   }
 
   sendMessage(evt, chatKey) {
+    if (this.state.inputs[chatKey] === '') {
+        return;
+    }
+
     var toId = this.props.chats[chatKey].dietitianId == "chatfeedback"
       ? this.props.chats[chatKey].userId
       : this.props.chats[chatKey].dietitianId;
@@ -69,12 +75,19 @@ class ChatSendMessage extends React.PureComponent {
     });
   }
 
+  handleKeyPress(chatKey, {key}) {
+    if (key === 'Enter') {
+        this.sendMessage(null, chatKey);
+    }
+  }
+
   render() {
     return (
       <div>
         <TextField
           hintText="Mesaj yaz" 
           value={this.state.inputs[this.props.chatKey] || ""}
+          onKeyPress={this.handleKeyPress.bind(this, this.props.chatKey)}
           onChange={this.updateInputValue.bind(this, this.props.chatKey)}/>
         <FlatButton label="Gönder" onClick={(evt) => this.sendMessage(evt, this.props.chatKey)}/>
       </div>
@@ -88,21 +101,6 @@ class MessageList extends Component {
       super(props);
   }
 
-  sendMessage(evt, chatKey) {
-    var toId = this.props.chats[chatKey].dietitianId == "chatfeedback"
-      ? this.props.chats[chatKey].userId
-      : this.props.chats[chatKey].dietitianId;
-
-    this.props.firebase.push(`/messages/${chatKey}`, {
-      type: "text",
-      content: this.state.inputs[chatKey],
-      isSeen: false,
-      timestamp: parseInt(new Date().getTime()/1000),
-      toId: toId,
-      fromId: 'chatfeedback'
-    });
-  }
-
   render() {
     var chats = this.props.chats;
     var messages = this.props.messages;
@@ -110,7 +108,7 @@ class MessageList extends Component {
     var dietitians = this.props.dietitians;
 
     if (chats === undefined || messages === undefined || users === undefined || dietitians === undefined) {
-      return (<article>wait</article>);
+      return (<CircularProgress />);
     }
 
     var chatKeys = Object.keys(chats).filter((k) => {
@@ -133,7 +131,7 @@ class MessageList extends Component {
       var msgContents = Object.keys(messages[key]).sort(function(l,r) {
         var lv = timestampToInt(messages[key][l].timestamp);
         var rv = timestampToInt(messages[key][r].timestamp);
-        return lv > rv;
+        return lv - rv;
       }).map(msgKey => {
         const msg = messages[key][msgKey];
 

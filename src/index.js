@@ -7,6 +7,7 @@ import {deepOrange500} from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import './styles/index.css';
+import AppLoader from './components/Login/AppLoader';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -27,6 +28,7 @@ import firebase from 'firebase'
     dietitians: 'dietitians',
     messages: 'messages',
     enableLogging: false, // enable/disable Firebase's database logging
+    updateProfileOnLogin: false,
   }
   
   // Add redux Firebase to compose
@@ -60,7 +62,7 @@ ReactDOM.render((
     <Provider store={store}>
         <MuiThemeProvider muiTheme={muiTheme}>
             <BrowserRouter>
-                <App />
+                <AppLoader />
             </BrowserRouter>
         </MuiThemeProvider>
     </Provider>
