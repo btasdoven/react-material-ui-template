@@ -1,0 +1,46 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "firebase": "^4.11.0",
+    "intl": "^1.2.5",
+    "intl-locales-supported": "^1.0.0",
+    "lodash": "^4.17.5",
+    "material-ui": "^0.20.0",
+    "material-ui-responsive-drawer": "^1.19.4",
+    "material-ui-sortable-table": "github:vorlov/material-ui-sortable-table",
+    "module": "^1.2.5",
+    "mui-react-phone-input": "0.0.10",
+    "prop-types": "^15.6.1",
+    "react": "^16.2.0",
+    "react-addons-shallow-compare": "^15.6.2",
+    "react-dom": "^16.2.0",
+    "react-flexbox-grid": "^2.0.0",
+    "react-fontawesome": "^1.6.1",
+    "react-google-button": "^0.5.1",
+    "react-instagram-login": "^1.2.0",
+    "react-pure-grid": "^2.1.1",
+    "react-redux": "^5.0.7",
+    "react-redux-firebase": "^2.0.5",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "^1.1.1",
+    "react-social-login-buttons": "^1.3.6",
+    "react-tap-event-plugin": "^3.0.2",
+    "redux": "^3.7.2",
+    "redux-responsive": "^4.3.5",
+    "webpack-merge": "^4.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.11",
+    "style-loader": "^0.20.3"
+  }
+}
