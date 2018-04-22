@@ -22,6 +22,12 @@ import DietitianList from './DietitianList';
 import UserList from './UserList';
 import MessageList from './MessageList';
 import DietitianMessageList from './Dietitian/MessageList';
+import AdminRoute, { isFirebaseAdmin } from './Login/AdminRoute';
+
+import Main from './Main';
+import DietitianList from './DietitianList';
+import UserList from './UserList';
+import MessageList from './MessageList';
 import ProfileMenuItem from './Login/ProfileMenuItem';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
@@ -33,6 +39,7 @@ class App extends Component {
     if (this.props.auth === undefined) {
         return ( <LoadingIcon /> );
     }
+
     var isAdmin = isFirebaseAdmin(this.props.auth);
 
     return (

@@ -7,7 +7,10 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import '../styles/MessageList.css'
+<<<<<<< HEAD
 import LoadingIcon from './Common/LoadingIcon';
+=======
+>>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
 
 const enhance = compose(
   firebaseConnect([
@@ -109,7 +112,11 @@ class MessageList extends Component {
     var dietitians = this.props.dietitians;
 
     if (chats === undefined || messages === undefined || users === undefined || dietitians === undefined) {
+<<<<<<< HEAD
       return (<LoadingIcon />);
+=======
+      return (<CircularProgress />);
+>>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
     }
 
     var chatKeys = Object.keys(chats).filter((k) => {

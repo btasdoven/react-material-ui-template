@@ -5,8 +5,12 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import RaisedButton from 'material-ui/RaisedButton';
+<<<<<<< HEAD
 import LoadingIcon from '../Common/LoadingIcon';
 import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from './AdminRoute';
+=======
+import CircularProgress from 'material-ui/CircularProgress';
+>>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
 
 import GoogleButton from 'react-google-button'
 import InstagramLogin from 'react-instagram-login';
@@ -41,6 +45,7 @@ class AppLoader extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     if (!isLoaded(this.props.auth)) {
       return ( <LoadingIcon /> );
     }
@@ -54,12 +59,29 @@ class AppLoader extends Component {
                     text="Google ile giriş yap"
                     onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })} /> <br />
 
+=======
+    return (
+      !isLoaded(this.props.auth)
+      ? <CircularProgress />
+      : isEmpty(this.props.auth)
+        ? <Grid fluid style={{minHeight: "100vh"}}>
+            <Row center="xs" middle="xs">
+                <Col xs={6} md={4} lg={3}>
+                  <GoogleLoginButton 
+                    text="Google ile giriş yap"
+                    onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })} />
+                </Col>
+              </Row>
+              <Row center="xs" middle="xs">
+                <Col xs={6} md={4} lg={3}>
+>>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
                     <InstagramLoginButton 
                       text="İnstagram ile giriş yap" 
                       onClick={() => {
                         window.open('https://www.diyetkocum.net/redirect', 'firebaseAuth', 'height=315,width=400');
                       }}/>
                 </Col>
+<<<<<<< HEAD
             </Row>
         </Grid>
       )
@@ -95,4 +117,17 @@ export default compose(
       auth: firebase.auth,
       dietitians: firebase.data.dietitians,
   })),
+=======
+              </Row>
+            </Grid>
+        : <App /> 
+      )
+    }
+  }
+
+export default compose(
+  withRouter,
+  firebaseConnect(), // withFirebase can also be used
+  connect(({ firebase: { auth } }) => ({ auth }))
+>>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
 )(AppLoader)
