@@ -42,14 +42,14 @@ class ClientList extends Component {
     const cards = Object.keys(users).slice(1,10).map(key => {
       var u = users[key];
       return (
-        <div>
+        <div key={key}>
           <ListItem
             primaryText={u.name}
             leftAvatar={<Avatar src={u.profileImageUrl || "/static/default_avatar.png"} />}
             onClick={() => this.props.history.push("/me/clients/" + key)}
           />
           <Divider />
-          </div>
+        </div>
       );
     });
 

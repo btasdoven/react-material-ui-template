@@ -8,6 +8,33 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import '../../styles/MessageList.css'
 import LoadingIcon from '../Common/LoadingIcon';
+import {List, ListItem} from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
+import MenuItem from 'material-ui/MenuItem';
+import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from 'material-ui/IconMenu';
+import Divider from 'material-ui/Divider';
+import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from '../Login/AdminRoute';
+
+const iconButtonElement = (
+  <IconButton
+    touch={true}
+    tooltip="more"
+    tooltipPosition="bottom-left"
+  >
+    <MoreVertIcon color={grey400} />
+  </IconButton>
+);
+
+const rightIconMenu = (
+  <IconMenu iconButtonElement={iconButtonElement}>
+    <MenuItem>Reply</MenuItem>
+    <MenuItem>Forward</MenuItem>
+    <MenuItem>Delete</MenuItem>
+  </IconMenu>
+);
 
 const enhance = compose(
   firebaseConnect([
@@ -17,6 +44,7 @@ const enhance = compose(
     { path: 'dietitians' },
   ]),
   connect(({ firebase }) => ({
+      auth: firebase.auth,
       chats: firebase.data.chats,
       messages: firebase.data.messages,
       users: firebase.data.users,
@@ -112,11 +140,11 @@ class MessageList extends Component {
       return (<LoadingIcon />);
     }
 
-    var uid = "chatfeedback" //this.props.auth.uid
+    var uid = getFirebaseDietitianId(this.props.auth);
 
-    var chatKeys = Object.keys(chats).filter((k) => {
-      return k in messages && k in chats &&
-        (chats[k].userId == "chatfeedback" || chats[k].dietianId == "chatfeedback");
+    var chatKeys = Object.keys(chats).filter(k => {
+      return k in messages && k in chats && 
+        (chats[k].userId === uid || chats[k].dietitianId === uid);
     });
     
     chatKeys.sort(function(l, r) {
@@ -132,21 +160,18 @@ class MessageList extends Component {
         return;
       }
 
-      var msgContents = Object.keys(messages[key]).sort(function(l,r) {
+      var msgKeys = Object.keys(messages[key]).sort(function(l,r) {
         var lv = timestampToInt(messages[key][l].timestamp);
         var rv = timestampToInt(messages[key][r].timestamp);
-        return lv - rv;
-      }).map(msgKey => {
+        return rv - lv;
+      });
+
+      var msgPreviews = msgKeys.map(msgKey => {
         const msg = messages[key][msgKey];
+        return (<span> {timeSince(new Date(timestampToInt(msg.timestamp)*1000))}: {msg.content} <br/></span>);
+      }).filter(m => m !== undefined || m !== '').slice(1,3);
 
-        return (
-          <div key={msgKey}>
-            {msg.isSeen ? "[Okundu]" : ""}[{timeSince(new Date(timestampToInt(msg.timestamp)*1000))}][{users[msg.fromId] ? users[msg.fromId].name : ""}] {msg.content}
-          </div>
-        )}
-      );
-
-      if (msgContents == null || msgContents.length == 0) {
+      if (msgPreviews == null || msgPreviews.length == 0) {
         return;
       }
 
@@ -154,30 +179,25 @@ class MessageList extends Component {
       var u2 = dietitians[chats[key].userId] || users[chats[key].userId];
 
       return (
-        <Card key={key} className="card">
-          <CardHeader 
-                          title={u1.name + " - " + u2.name}
-                          subtitle={msgContents[msgContents.length-1]}
-                          actAsExpander={true}
-                          showExpandableButton={true}
-                          avatar={u2.profileImageUrl || u1.profileImageUrl}
-                      />
-          <CardText expandable={true}>
-            {msgContents}
-          </CardText>
-          <CardActions expandable={true}>
-            <ChatSendMessage
-              chatKey={key} firebase={this.props.firebase} chats={this.props.chats}
-              />
-          </CardActions>
-        </Card>
+        <div key={key}>
+          <ListItem
+            leftAvatar={<Avatar src={u2.profileImageUrl || u1.profileImageUrl} />}
+            rightIconButton={rightIconMenu}
+            primaryText={u2.name}
+            secondaryText={
+              msgPreviews     
+            }
+            secondaryTextLines={3}
+          />
+          <Divider />
+        </div>
       );
     });
 
     return (
-      <div>
-        {cards}
-      </div>
+      <List>
+        {cards.slice(1, 25)}
+      </List>
     );
   }
 }

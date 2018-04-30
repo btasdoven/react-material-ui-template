@@ -8,14 +8,18 @@ import {List, ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import ExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
-import CircularProgress from 'material-ui/CircularProgress';
+import LoadingIcon from '../Common/LoadingIcon';
 import { Route, Redirect } from 'react-router-dom';
+import FontIcon from 'material-ui/FontIcon';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
 
 const ProfileMenuItem = ({ firebase, auth, dietitians, history }) => {
   if (!isLoaded(auth) || isEmpty(auth) || dietitians === undefined) {
-    return (<CircularProgress />);
+    return (<LoadingIcon />);
   }
 
   var uid = auth !== undefined && auth.uid === "B7Kpe30S9dclhsrkG3csRKxsT2C3" // for diyetkocumapp@gmail.com
@@ -27,7 +31,7 @@ const ProfileMenuItem = ({ firebase, auth, dietitians, history }) => {
   if (profile === undefined) {
     firebase.logout();
     history.push('/');
-    alert("Bu e-posta adresi sistemimizde diyetisyen olarak kayitli degildir.");
+    alert("ProfielMenuItem: Bu e-posta adresi sistemimizde diyetisyen olarak kayitli degildir.");
     window.location.reload();
     return;
   }
@@ -48,8 +52,20 @@ const ProfileMenuItem = ({ firebase, auth, dietitians, history }) => {
               firebase.logout();
               history.push('/');
             }}>
-            <ExitToApp />
+            <FontIcon className="material-icons">exit_to_app</FontIcon>
           </IconButton>
+          // <IconMenu
+          //   iconButtonElement={<IconButton iconStyle={{width: 24, height:24}}><SettingsIcon /></IconButton>}
+          //   anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+          //   targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          // >
+          //   <MenuItem primaryText="Profilim" leftIcon={<FontIcon className="material-icons">people</FontIcon>} onClick = {() => history.push("/me")} />
+          //   <MenuItem primaryText="Çıkış" leftIcon={<FontIcon className="material-icons">exit_to_app</FontIcon>} onClick = {() => {
+          //     firebase.logout();
+          //     history.push("/");
+          //     window.location.reload();
+          //   }} />
+          // </IconMenu>
         }
       />   
       <Divider />

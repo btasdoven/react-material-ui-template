@@ -15,14 +15,11 @@ import { ResponsiveDrawer, BodyContainer } from 'material-ui-responsive-drawer'
 import PrivateRoute from './Login/PrivateRoute';
 import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from './Login/AdminRoute';
 
-import Main from './Main';
 import ClientList from './Dietitian/ClientList';
+import Profile from './Dietitian/Profile';
 import Client from './Dietitian/Client';
-import DietitianList from './DietitianList';
-import UserList from './UserList';
-import MessageList from './MessageList';
 import DietitianMessageList from './Dietitian/MessageList';
-import AdminRoute, { isFirebaseAdmin } from './Login/AdminRoute';
+import DietitianMessage from './Dietitian/Message';
 
 import Main from './Main';
 import DietitianList from './DietitianList';
@@ -35,12 +32,24 @@ import {List, ListItem} from 'material-ui/List';
 
 class App extends Component {
   render() {
-
-    if (this.props.auth === undefined) {
+    if (this.props.auth === undefined || this.props.dietitians === undefined) {
         return ( <LoadingIcon /> );
     }
 
     var isAdmin = isFirebaseAdmin(this.props.auth);
+
+    var uid = this.props.auth.uid === "B7Kpe30S9dclhsrkG3csRKxsT2C3" 
+        ? "chatfeedback" // for diyetkocumapp@gmail.com
+        : this.props.auth.uid;
+
+    var isAuthorizedUser = this.props.dietitians[uid] !== undefined;
+
+    if (!isAdmin && !isAuthorizedUser) {
+        this.props.firebase.logout();
+        this.props.history.push('/');
+        alert("Bu e-posta adresi sistemimizde diyetisyen olarak kayitli degildir.");
+        window.location.reload();
+    }
 
     return (
       <div>
@@ -50,8 +59,13 @@ class App extends Component {
               <ListItem 
                   containerElement={<Link to='/'/>} 
                   primaryText="Ana Sayfa" 
-                  leftIcon={<FontIcon className="material-icons">people</FontIcon>}
+                  leftIcon={<FontIcon className="material-icons">dashboard</FontIcon>}
                   />
+                <ListItem 
+                    containerElement={<Link to='/me'/>} 
+                    primaryText="Profilim" 
+                    leftIcon={<FontIcon className="material-icons">person</FontIcon>}
+                    />
               <ListItem 
                 containerElement={<Link to='/me/clients'/>} 
                 primaryText="Danisamlarim" 
@@ -60,7 +74,7 @@ class App extends Component {
               <ListItem 
                 containerElement={<Link to='/me/messages'/>} 
                 primaryText="Mesajlarim" 
-                leftIcon={<FontIcon className="material-icons">people</FontIcon>}
+                leftIcon={<FontIcon className="material-icons">email</FontIcon>}
                 />
             </List>
             {isAdmin  
@@ -88,11 +102,16 @@ class App extends Component {
           <BodyContainer>
               <Switch>
                 <PrivateRoute exact path='/' component={Main}/>
-                <PrivateRoute path='/me/messages' component={DietitianMessageList}/>
+
+                <PrivateRoute exact path='/me' component={Profile}/>
+                <PrivateRoute exact path='/me/messages' component={DietitianMessageList}/>
+                <PrivateRoute path='/me/messages/:messageId' component={DietitianMessage}/>
+
                 <PrivateRoute exact path='/me/clients' component={ClientList}/>
                 <PrivateRoute path='/me/clients/:clientId' component={Client} />
-                <PrivateRoute path='/dietitians' component={DietitianList}/>
-                <PrivateRoute path='/users' component={UserList}/>
+
+                <AdminRoute path='/dietitians' component={DietitianList}/>
+                <AdminRoute path='/users' component={UserList}/>
                 <AdminRoute path='/messages' component={MessageList}/>
               </Switch>
           </BodyContainer>

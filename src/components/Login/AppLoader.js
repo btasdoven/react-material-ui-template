@@ -5,12 +5,8 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import RaisedButton from 'material-ui/RaisedButton';
-<<<<<<< HEAD
 import LoadingIcon from '../Common/LoadingIcon';
 import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from './AdminRoute';
-=======
-import CircularProgress from 'material-ui/CircularProgress';
->>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
 
 import GoogleButton from 'react-google-button'
 import InstagramLogin from 'react-instagram-login';
@@ -36,8 +32,10 @@ class AppLoader extends Component {
     console.log(event);
     // Do we trust the sender of this message?  (might be
     // different from what we originally opened, for example).
-    // if (event.origin !== "http://example.com")
+    // if (event.origin !== "https://diyetkocum.net") {
+    //   console.log("Incorrect event origin " + event.origin);
     //   return;
+    // }
 
     this.props.firebase.login({
       token: event.data.token
@@ -45,7 +43,6 @@ class AppLoader extends Component {
   }
 
   render() {
-<<<<<<< HEAD
     if (!isLoaded(this.props.auth)) {
       return ( <LoadingIcon /> );
     }
@@ -59,51 +56,15 @@ class AppLoader extends Component {
                     text="Google ile giriş yap"
                     onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })} /> <br />
 
-=======
-    return (
-      !isLoaded(this.props.auth)
-      ? <CircularProgress />
-      : isEmpty(this.props.auth)
-        ? <Grid fluid style={{minHeight: "100vh"}}>
-            <Row center="xs" middle="xs">
-                <Col xs={6} md={4} lg={3}>
-                  <GoogleLoginButton 
-                    text="Google ile giriş yap"
-                    onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })} />
-                </Col>
-              </Row>
-              <Row center="xs" middle="xs">
-                <Col xs={6} md={4} lg={3}>
->>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
                     <InstagramLoginButton 
                       text="İnstagram ile giriş yap" 
                       onClick={() => {
                         window.open('https://www.diyetkocum.net/redirect', 'firebaseAuth', 'height=315,width=400');
                       }}/>
                 </Col>
-<<<<<<< HEAD
             </Row>
         </Grid>
       )
-    }
-
-    if (this.props.auth === undefined || this.props.dietitians === undefined) {
-      return ( <LoadingIcon /> );
-    }
-
-    var isAdmin = isFirebaseAdmin(this.props.auth);
-
-    var uid = this.props.auth.uid === "B7Kpe30S9dclhsrkG3csRKxsT2C3" 
-      ? "chatfeedback" // for diyetkocumapp@gmail.com
-      : this.props.auth.uid;
-
-    var isAuthorizedUser = this.props.dietitians[uid] !== undefined;
-
-    if (!isAdmin && !isAuthorizedUser) {
-      this.props.firebase.logout();
-      this.props.history.push('/');
-      alert("Bu e-posta adresi sistemimizde diyetisyen olarak kayitli degildir.");
-      window.location.reload();
     }
     
     return <App />
@@ -112,22 +73,8 @@ class AppLoader extends Component {
 
 export default compose(
   withRouter,
-  firebaseConnect({ path: 'dietitians' }),
+  firebaseConnect(),
   connect(({ firebase }) =>({
       auth: firebase.auth,
-      dietitians: firebase.data.dietitians,
   })),
-=======
-              </Row>
-            </Grid>
-        : <App /> 
-      )
-    }
-  }
-
-export default compose(
-  withRouter,
-  firebaseConnect(), // withFirebase can also be used
-  connect(({ firebase: { auth } }) => ({ auth }))
->>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
 )(AppLoader)

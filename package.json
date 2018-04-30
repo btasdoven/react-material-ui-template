@@ -3,32 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "antd": "^3.4.2",
     "babel-polyfill": "^6.26.0",
+    "chat-template": "0.0.26",
     "firebase": "^4.11.0",
-<<<<<<< HEAD
     "intl": "^1.2.5",
     "intl-locales-supported": "^1.0.0",
-=======
->>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
     "lodash": "^4.17.5",
     "material-ui": "^0.20.0",
     "material-ui-responsive-drawer": "^1.19.4",
     "material-ui-sortable-table": "github:vorlov/material-ui-sortable-table",
     "module": "^1.2.5",
-<<<<<<< HEAD
     "mui-react-phone-input": "0.0.10",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
+    "react-addons-css-transition-group": "^15.6.2",
     "react-addons-shallow-compare": "^15.6.2",
-=======
-    "prop-types": "^15.6.1",
-    "react": "^16.2.0",
->>>>>>> 6ae7105afc06ecb3e14c996bc1e7575253ffc2bd
+    "react-credit-card-input": "^0.4.6",
+    "react-credit-cards": "^0.7.0",
+    "react-creditcard": "^1.1.2",
     "react-dom": "^16.2.0",
+    "react-event-timeline": "^1.5.1",
     "react-flexbox-grid": "^2.0.0",
     "react-fontawesome": "^1.6.1",
     "react-google-button": "^0.5.1",
     "react-instagram-login": "^1.2.0",
+    "react-payment": "^0.1.8",
     "react-pure-grid": "^2.1.1",
     "react-redux": "^5.0.7",
     "react-redux-firebase": "^2.0.5",
@@ -37,6 +37,7 @@
     "react-scripts": "^1.1.1",
     "react-social-login-buttons": "^1.3.6",
     "react-tap-event-plugin": "^3.0.2",
+    "recharts": "^1.0.0-beta.10",
     "redux": "^3.7.2",
     "redux-responsive": "^4.3.5",
     "webpack-merge": "^4.1.2"
