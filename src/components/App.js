@@ -21,7 +21,7 @@ import Client from './Dietitian/Client';
 import DietitianMessageList from './Dietitian/MessageList';
 import DietitianMessage from './Dietitian/Message';
 
-import Main from './Main';
+import Dashboard from './Dashboard/Dashboard.js';
 import DietitianList from './DietitianList';
 import UserList from './UserList';
 import MessageList from './MessageList';
@@ -29,6 +29,7 @@ import ProfileMenuItem from './Login/ProfileMenuItem';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 import {List, ListItem} from 'material-ui/List';
+import Badge from 'material-ui/Badge';
 
 class App extends Component {
   render() {
@@ -38,9 +39,7 @@ class App extends Component {
 
     var isAdmin = isFirebaseAdmin(this.props.auth);
 
-    var uid = this.props.auth.uid === "B7Kpe30S9dclhsrkG3csRKxsT2C3" 
-        ? "chatfeedback" // for diyetkocumapp@gmail.com
-        : this.props.auth.uid;
+    var uid = getFirebaseDietitianId(this.props.auth.uid);
 
     var isAuthorizedUser = this.props.dietitians[uid] !== undefined;
 
@@ -49,6 +48,7 @@ class App extends Component {
         this.props.history.push('/');
         alert("Bu e-posta adresi sistemimizde diyetisyen olarak kayitli degildir.");
         window.location.reload();
+        return;
     }
 
     return (
@@ -68,13 +68,15 @@ class App extends Component {
                     />
               <ListItem 
                 containerElement={<Link to='/me/clients'/>} 
-                primaryText="Danisamlarim" 
+                primaryText="Danışanlarım" 
                 leftIcon={<FontIcon className="material-icons">people</FontIcon>}
                 />
               <ListItem 
                 containerElement={<Link to='/me/messages'/>} 
-                primaryText="Mesajlarim" 
-                leftIcon={<FontIcon className="material-icons">email</FontIcon>}
+                primaryText="Mesajlarım" 
+                leftIcon={
+                        <FontIcon className="material-icons">email</FontIcon>
+                }
                 />
             </List>
             {isAdmin  
@@ -101,7 +103,7 @@ class App extends Component {
           </ResponsiveDrawer>
           <BodyContainer>
               <Switch>
-                <PrivateRoute exact path='/' component={Main}/>
+                <PrivateRoute exact path='/' component={Dashboard}/>
 
                 <PrivateRoute exact path='/me' component={Profile}/>
                 <PrivateRoute exact path='/me/messages' component={DietitianMessageList}/>

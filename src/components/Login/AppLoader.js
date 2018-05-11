@@ -16,6 +16,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 import App from '../App';
 import ProfileMenuItem from './ProfileMenuItem';
+import TestLoginButton from './TestLoginButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
 //textAlign: "center", margin: "auto", marginTop: "25%", width: "25em"
@@ -52,15 +53,21 @@ class AppLoader extends Component {
         <Grid fluid style={{minHeight: "100vh"}}>
             <Row center="xs" middle="xs" style={{minHeight: "100vh"}}>
                 <Col xs={6} md={6} lg={3}>
+                  <TestLoginButton 
+                    text="Demo hesabı ile giriş yap" 
+                    onClick={() => {
+                      this.props.firebase.login({ email: 'diyetkocumtest@diyetkocum.net', password: 'diyetkocumtest' })
+                    }}/>
+                  <br />
                   <GoogleLoginButton 
                     text="Google ile giriş yap"
-                    onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })} /> <br />
-
-                    <InstagramLoginButton 
-                      text="İnstagram ile giriş yap" 
-                      onClick={() => {
-                        window.open('https://www.diyetkocum.net/redirect', 'firebaseAuth', 'height=315,width=400');
-                      }}/>
+                    onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })} /> 
+                  <br />
+                  <InstagramLoginButton 
+                    text="İnstagram ile giriş yap" 
+                    onClick={() => {
+                      window.open('https://www.diyetkocum.net/redirect', 'firebaseAuth', 'height=315,width=400');
+                    }}/>
                 </Col>
             </Row>
         </Grid>

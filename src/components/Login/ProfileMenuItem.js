@@ -16,24 +16,18 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import { getFirebaseDietitianId } from './AdminRoute';
 
 const ProfileMenuItem = ({ firebase, auth, dietitians, history }) => {
   if (!isLoaded(auth) || isEmpty(auth) || dietitians === undefined) {
     return (<LoadingIcon />);
   }
 
-  var uid = auth !== undefined && auth.uid === "B7Kpe30S9dclhsrkG3csRKxsT2C3" // for diyetkocumapp@gmail.com
-    ? "chatfeedback"
-    : auth.uid;
-  
+  var uid = getFirebaseDietitianId(auth.uid);
   var profile = dietitians[uid];
 
   if (profile === undefined) {
-    firebase.logout();
-    history.push('/');
-    alert("ProfielMenuItem: Bu e-posta adresi sistemimizde diyetisyen olarak kayitli degildir.");
-    window.location.reload();
-    return;
+    return (<LoadingIcon />);
   }
 
   return (

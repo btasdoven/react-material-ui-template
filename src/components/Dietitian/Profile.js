@@ -25,6 +25,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import { getFirebaseDietitianId } from '../Login/AdminRoute';
 
 import '../../styles/MessageList.css'
 import LoadingIcon from '../Common/LoadingIcon';
@@ -111,12 +112,10 @@ class Client extends React.PureComponent {
       return (<LoadingIcon />);
     }
 
-    var uid = this.props.auth.uid;
-    uid = uid === "B7Kpe30S9dclhsrkG3csRKxsT2C3" 
-      ? "chatfeedback" // for diyetkocumapp@gmail.com
-      : uid;
 
+    var uid = getFirebaseDietitianId(this.props.auth.uid);
     var u = this.props.dietitians[uid];
+
     const toolbarStyle = {
       backgroundColor: indigo500
     }
@@ -238,7 +237,7 @@ class Client extends React.PureComponent {
           </CardText>
         </Card>
 
-      <Card key={uid} className="card">
+      <Card key={uid + "-kk"} className="card">
         <CardText>
             <h3>Kredi Kartı Bilgilerim</h3>
             <Grid fluid>

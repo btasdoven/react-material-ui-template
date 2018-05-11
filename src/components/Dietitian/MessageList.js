@@ -140,7 +140,7 @@ class MessageList extends Component {
       return (<LoadingIcon />);
     }
 
-    var uid = getFirebaseDietitianId(this.props.auth);
+    var uid = getFirebaseDietitianId(this.props.auth.uid);
 
     var chatKeys = Object.keys(chats).filter(k => {
       return k in messages && k in chats && 
@@ -187,7 +187,7 @@ class MessageList extends Component {
             secondaryText={
               msgPreviews     
             }
-            secondaryTextLines={3}
+            secondaryTextLines={1}
           />
           <Divider />
         </div>

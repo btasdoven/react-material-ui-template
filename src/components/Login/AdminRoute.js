@@ -33,14 +33,14 @@ export const isFirebaseAdmin = function(auth) {
     || auth.uid === "instagram:6497798074") // for diyetkocumapp@gmail.com
 }
 
-export const getFirebaseDietitianId = function(au) {
-  var eq = au.uid === "B7Kpe30S9dclhsrkG3csRKxsT2C3";
-
-  if (eq) {
+export const getFirebaseDietitianId = function(uid) {
+  if (uid === "B7Kpe30S9dclhsrkG3csRKxsT2C3") {
     return "chatfeedback";
+  } else if (uid === "QocEWpgy2Na1eKRHeOR6TLxDtU23") {
+    return "diyetkocumtest";
   }
-      
-  return au.uid;
+  
+  return uid;
 }
 
 export default compose(
