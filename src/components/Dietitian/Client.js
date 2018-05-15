@@ -230,6 +230,14 @@ class Client extends React.PureComponent {
                       <Col xs={12} md={6} lg={6}>
                         <TextField floatingLabelText="İsim ve soyisim" required={true} value={u.name} /><br />
                         <TextField floatingLabelText="E-posta adresi" type="email" value={u.email} /><br />
+                        <SelectField
+                          floatingLabelText="Cinsiyet"
+                          value={u.information.gender}
+                          onChange={this.handleChange}
+                        >
+                          <MenuItem value={"male"} primaryText="Erkek" />
+                          <MenuItem value={"female"} primaryText="Kadın" />
+                        </SelectField>
                       </Col>
                       <Col xs={12} md={6} lg={6}>
                         <TextField floatingLabelText="Telefon No." type="tel" size={11} /> <br />
@@ -260,11 +268,12 @@ class Client extends React.PureComponent {
                           <MenuItem value={4} primaryText="Her gün yapar" />
                         </SelectField> <br />
 
-                        <TextField floatingLabelText="İsim ve soyisim" required={true} value={u.name} /><br />
-                        <TextField floatingLabelText="E-posta adresi" type="email" value={u.email} /><br />
+                        <TextField floatingLabelText="Kilosu (kg)" required={true} type="number" value={u.information.weight} /><br />
+                        <TextField floatingLabelText="Boyu (cm)" required={true} type="number" value={u.information.height} /><br />
                       </Col>
                       <Col xs={12} md={6} lg={6}>
-                        <TextField floatingLabelText="Telefon No." type="tel" size={11} /> <br />
+                        <TextField floatingLabelText="Hedeflenen Kilo (kg)" required={true} type="number" value={u.information.targetWeight} /><br />
+                        <TextField floatingLabelText="Hedeflenen Süre (gün)" required={true} type="number" value={u.information.targetDays} /><br />
                       </Col>
                     </Row>
                   </Grid>
@@ -293,7 +302,7 @@ class Client extends React.PureComponent {
 
         <Card className="card">
           <CardText>
-            <Grid >
+            <Grid fluid style={{width: '100%'}}>
               <Row>
                 <Col xs={12} md={4} lg={4}>
                   <AutoComplete hintText="Yiyecek ekle" filter={AutoComplete.fuzzyFilter} dataSource={dataSource1} maxSearchResults={5}/>
@@ -302,7 +311,8 @@ class Client extends React.PureComponent {
                   <h3>18 Mayıs 2018 - 25 Mayıs 2018</h3>
                 </Col>
                 <Col xs={12} md={4} lg={4}>
-                  <RaisedButton label="Otomatik Hazırla" primary={true} />
+                    <RaisedButton label="Otomatik Hazırla" primary={true} style={{marginRight: 12}} />
+                    <RaisedButton label="Kayıtlı Diyetlerimden Seç" primary={true} />
                 </Col>
               </Row>
             </Grid>

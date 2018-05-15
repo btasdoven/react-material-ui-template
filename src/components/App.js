@@ -18,6 +18,10 @@ import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from './Login/Adm
 import ClientList from './Dietitian/ClientList';
 import Profile from './Dietitian/Profile';
 import Client from './Dietitian/Client';
+import Agenda from './Dietitian/Agenda';
+import Finance from './Dietitian/Finance';
+import Settings from './Dietitian/Settings';
+import SavedDietList from './Dietitian/SavedDietList';
 import DietitianMessageList from './Dietitian/MessageList';
 import DietitianMessage from './Dietitian/Message';
 
@@ -28,8 +32,11 @@ import MessageList from './MessageList';
 import ProfileMenuItem from './Login/ProfileMenuItem';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
-import {List, ListItem} from 'material-ui/List';
+import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Badge from 'material-ui/Badge';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+
+let SelectableList = makeSelectable(List);
 
 class App extends Component {
   render() {
@@ -62,22 +69,42 @@ class App extends Component {
                   leftIcon={<FontIcon className="material-icons">dashboard</FontIcon>}
                   />
                 <ListItem 
+                    containerElement={<Link to='/me/clients'/>} 
+                    primaryText="Danışanlarım" 
+                    leftIcon={<FontIcon className="material-icons">people</FontIcon>}
+                    />
+                <ListItem 
+                    containerElement={<Link to='/me/messages'/>} 
+                    primaryText="Mesajlarım" 
+                    leftIcon={<FontIcon className="material-icons">email</FontIcon>}
+                    rightIcon={<Badge badgeContent={2} secondary={true}></Badge>}
+                    />
+                <ListItem 
+                    containerElement={<Link to='/me/agenda'/>} 
+                    primaryText="Randevularım" 
+                    leftIcon={<FontIcon className="material-icons">calendar_today</FontIcon>}
+                    />
+                <Divider/>
+                <ListItem 
                     containerElement={<Link to='/me'/>} 
                     primaryText="Profilim" 
                     leftIcon={<FontIcon className="material-icons">person</FontIcon>}
                     />
-              <ListItem 
-                containerElement={<Link to='/me/clients'/>} 
-                primaryText="Danışanlarım" 
-                leftIcon={<FontIcon className="material-icons">people</FontIcon>}
-                />
-              <ListItem 
-                containerElement={<Link to='/me/messages'/>} 
-                primaryText="Mesajlarım" 
-                leftIcon={
-                        <FontIcon className="material-icons">email</FontIcon>
-                }
-                />
+                <ListItem 
+                    containerElement={<Link to='/me/finance'/>}
+                    primaryText="Finanslarım" 
+                    leftIcon={<FontIcon className="material-icons">credit_card</FontIcon>}
+                    />
+                <ListItem 
+                    containerElement={<Link to='/me/diets'/>}
+                    primaryText="Kayıtlı Diyetlerim" 
+                    leftIcon={<FontIcon className="material-icons">assignment</FontIcon>}
+                    />
+                <ListItem 
+                    containerElement={<Link to='/me/settings'/>}
+                    primaryText="Ayarlar" 
+                    leftIcon={<FontIcon className="material-icons">settings</FontIcon>}
+                    />
             </List>
             {isAdmin  
                 ? <List>
@@ -111,6 +138,11 @@ class App extends Component {
 
                 <PrivateRoute exact path='/me/clients' component={ClientList}/>
                 <PrivateRoute path='/me/clients/:clientId' component={Client} />
+
+                <PrivateRoute path='/me/agenda' component={Agenda}/>
+                <PrivateRoute path='/me/finance' component={Finance}/>
+                <PrivateRoute path='/me/settings' component={Settings}/>
+                <PrivateRoute path='/me/diets' component={SavedDietList}/>
 
                 <AdminRoute path='/dietitians' component={DietitianList}/>
                 <AdminRoute path='/users' component={UserList}/>
