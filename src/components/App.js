@@ -17,7 +17,7 @@ import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from './Login/Adm
 
 import ClientList from './Dietitian/ClientList';
 import Profile from './Dietitian/Profile';
-import Client from './Dietitian/Client';
+import Client from './Dietitian/Client/Client';
 import Agenda from './Dietitian/Agenda';
 import Finance from './Dietitian/Finance';
 import Settings from './Dietitian/Settings';

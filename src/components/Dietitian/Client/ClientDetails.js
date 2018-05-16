@@ -28,9 +28,10 @@ import SelectField from 'material-ui/SelectField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Chip from 'material-ui/Chip';
 import AutoComplete from 'material-ui/AutoComplete';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
-import '../../styles/MessageList.css'
-import LoadingIcon from '../Common/LoadingIcon';
+import '../../../styles/MessageList.css'
+import LoadingIcon from '../../Common/LoadingIcon';
 import {indigo500} from 'material-ui/styles/colors';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
@@ -62,7 +63,7 @@ const changeHandler = (target, formattedNumber, selectedCountry, rawValue) => {
   console.log(`${formattedNumber} - ${rawValue}`, 'Formatted value and raw value')
 }
 
-class Client extends React.PureComponent {
+class ClientDetails extends React.PureComponent {
 
   constructor(props) {
     super(props)
@@ -122,6 +123,8 @@ class Client extends React.PureComponent {
 
     var uid = this.props.match.params.clientId;
     var u = this.props.users[uid];
+    u.information = u.information === undefined ? {} : u.information;
+
     const toolbarStyle = {
       backgroundColor: indigo500
     }
@@ -195,30 +198,6 @@ class Client extends React.PureComponent {
     
     return (
       <div>
-        <Toolbar>
-          <ToolbarGroup firstChild={true}>
-            <IconButton onClick={() => this.props.history.push('/me/clients')}><NavigationClose /></IconButton>
-            <Avatar style={{marginRight: "25px"}} src={u.profileImageUrl || "/static/default_avatar.png"} />
-            <ToolbarTitle text={u.name} />
-            <ToolbarSeparator />
-            <FontIcon className="material-icons">print</FontIcon>
-            <FontIcon className="material-icons">share</FontIcon>
-            <FontIcon className="material-icons">chat</FontIcon>
-            <FontIcon className="material-icons">payment</FontIcon>
-            <FontIcon className="material-icons">history</FontIcon>
-            <RaisedButton label="GÜNCELLE" primary={true} />
-          </ToolbarGroup>
-        </Toolbar>
-        {/* <AppBar
-          title={
-              <ListItem
-                leftAvatar={
-                  <Avatar src={u.profileImageUrl || "/static/default_avatar.png"} />
-                }>
-                {u.name}
-              </ListItem>}
-          iconElementLeft={<IconButton onClick={() => this.props.history.push('/me/clients')}><NavigationClose /></IconButton>}
-        /> */}
         <Card key={uid} className="card">
           <CardText>
             <Grid fluid>
@@ -229,7 +208,14 @@ class Client extends React.PureComponent {
                     <Row>
                       <Col xs={12} md={6} lg={6}>
                         <TextField floatingLabelText="İsim ve soyisim" required={true} value={u.name} /><br />
-                        <TextField floatingLabelText="E-posta adresi" type="email" value={u.email} /><br />
+                        <DatePicker 
+                          floatingLabelText="Doğum tarihi"
+                          openToYearSelection={true} locale="tr-TR"
+                          DateTimeFormat={DateTimeFormat}
+                          okLabel="Onayla"
+                          cancelLabel="Vazgeç"
+                          minDate={new Date('1940-01-01')}
+                          maxDate={new Date('2019-01-01')} />
                         <SelectField
                           floatingLabelText="Cinsiyet"
                           value={u.information.gender}
@@ -241,14 +227,7 @@ class Client extends React.PureComponent {
                       </Col>
                       <Col xs={12} md={6} lg={6}>
                         <TextField floatingLabelText="Telefon No." type="tel" size={11} /> <br />
-                        <DatePicker 
-                          floatingLabelText="Doğum tarihi"
-                          openToYearSelection={true} locale="tr-TR"
-                          DateTimeFormat={DateTimeFormat}
-                          okLabel="Onayla"
-                          cancelLabel="Vazgeç"
-                          minDate={new Date('1940-01-01')}
-                          maxDate={new Date('2019-01-01')} />
+                        <TextField floatingLabelText="E-posta adresi" type="email" value={u.email} />
                       </Col>
                     </Row>
                   </Grid>
@@ -299,170 +278,9 @@ class Client extends React.PureComponent {
             </Grid>
           </CardText>
         </Card>
-
-        <Card className="card">
-          <CardText>
-            <Grid fluid style={{width: '100%'}}>
-              <Row>
-                <Col xs={12} md={4} lg={4}>
-                  <AutoComplete hintText="Yiyecek ekle" filter={AutoComplete.fuzzyFilter} dataSource={dataSource1} maxSearchResults={5}/>
-                </Col>
-                <Col xs={12} md={4} lg={4}>
-                  <h3>18 Mayıs 2018 - 25 Mayıs 2018</h3>
-                </Col>
-                <Col xs={12} md={4} lg={4}>
-                    <RaisedButton label="Otomatik Hazırla" primary={true} style={{marginRight: 12}} />
-                    <RaisedButton label="Kayıtlı Diyetlerimden Seç" primary={true} />
-                </Col>
-              </Row>
-            </Grid>
-            <Table selectable={false}>
-              <TableHeader adjustForCheckbox={false} displaySelectAll={false} enableSelectAll={false}>
-                <TableRow>
-                  <TableHeaderColumn></TableHeaderColumn>
-                  <TableHeaderColumn>Pazartesi</TableHeaderColumn>
-                  <TableHeaderColumn>Sali</TableHeaderColumn>
-                  <TableHeaderColumn>Carsamba</TableHeaderColumn>
-                  <TableHeaderColumn>Persembe</TableHeaderColumn>
-                  <TableHeaderColumn>Cuma</TableHeaderColumn>
-                  <TableHeaderColumn>Cumartesi</TableHeaderColumn>
-                  <TableHeaderColumn>Pazar</TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false}>
-                <TableRow>
-                  <TableHeaderColumn>Kahvalti</TableHeaderColumn>
-                  <TableHeaderColumn>
-                    {chipBadem}
-                    {chipYumurta}
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                    {chipYumurta}
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                  <TableHeaderColumn>
-                    {chipBadem}
-                    {chipYumurta}
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  <TableHeaderColumn>1. Ara Öğün</TableHeaderColumn>
-                  <TableHeaderColumn>
-                    {chipBadem}
-                    {chipYumurta}
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                    {chipBadem}
-                    {chipYumurta}
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                    {chipBadem}
-                    {chipBadem}
-                    {chipBadem}
-                    {chipBadem}
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                    {chipBadem}
-                    {chipYumurta}</TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  <TableHeaderColumn>Öğle Yemeği</TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                    {chipBadem}
-                    {chipYumurta}</TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  <TableHeaderColumn>2. Ara Öğün</TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  <TableHeaderColumn>Akşam Yemeği</TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>
-                  </TableHeaderColumn>
-                  <TableHeaderColumn></TableHeaderColumn>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardText>
-        </Card>
-
-        <Grid fluid key={uid+"-2"}>
-          <Row>
-            <Col xs={12} md={6} lg={6}>
-              <Card className="card">
-                <CardText>
-                  <h3>Kilo Değişim Grafiği</h3>
-                  <LineChart width={600} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                    <Line type="monotone" dataKey="kilo" stroke="#8884d8" />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <XAxis dataKey="name" />
-                    <YAxis domain={['dataMin - 5', 'dataMax + 5']} />
-                    <Tooltip />
-                  </LineChart>
-                </CardText>
-              </Card>
-            </Col>
-            <Col xs={12} md={12} lg={6}>
-              <Card className="card">
-                <CardText>
-                  <h3>Vücut Kitle İndeksi Değişim Grafiği</h3>
-                  <LineChart width={600} height={300} data={data2} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                    <Line type="monotone" dataKey="kilo" stroke="#8884d8" />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <XAxis dataKey="name" />
-                    <YAxis interval="preserveStartEnd" domain={['dataMin - 3', 'dataMax + 3']} />
-                    <Tooltip />
-                  </LineChart>
-                </CardText>
-              </Card>
-            </Col>
-          </Row>
-        </Grid>
-
-        <Card key={uid+"-3"} className="card">
-          <CardText>
-          </CardText>
-        </Card>
       </div>
     );
   }
 }
 
-export default enhance(Client)
+export default enhance(ClientDetails)
