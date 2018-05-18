@@ -26,7 +26,21 @@ class AppLoader extends Component {
     super(props, context);
 
     this.receiveMessage = this.receiveMessage.bind(this);
+    this.login = this.login.bind(this);
     window.addEventListener("message", this.receiveMessage, false);
+
+    if (this.props.location.search.indexOf("?email=") == 0) {
+      this.demoEmail = this.props.location.search.substring(7).replace('.', '?');
+      this.props.firebase.database().ref().child('portal_demo_logins/opened').update({ [this.demoEmail] : true });
+    }
+  }
+
+  login(event) {
+    if (this.demoEmail !== undefined) {
+      this.props.firebase.database().ref().child('portal_demo_logins/logged_in').update({ [this.demoEmail] : true });
+    }
+    
+    this.props.firebase.login({ email: 'diyetkocumtest@diyetkocum.net', password: 'diyetkocumtest' });
   }
 
   receiveMessage(event) {
@@ -55,9 +69,7 @@ class AppLoader extends Component {
                 <Col xs={6} md={6} lg={3}>
                   <TestLoginButton 
                     text="Demo hesabı ile giriş yap" 
-                    onClick={() => {
-                      this.props.firebase.login({ email: 'diyetkocumtest@diyetkocum.net', password: 'diyetkocumtest' })
-                    }}/>
+                    onClick={(evt) => this.login(evt)}/>
                   <br />
                   <GoogleLoginButton 
                     text="Google ile giriş yap"
@@ -74,6 +86,12 @@ class AppLoader extends Component {
       )
     }
     
+    if (this.demoEmail !== undefined) {
+      this.props.history.push('/');
+      window.location.reload();
+      return <div />;
+    }
+
     return <App />
   }
 }

@@ -168,7 +168,7 @@ class MessageList extends Component {
 
       var msgPreviews = msgKeys.map(msgKey => {
         const msg = messages[key][msgKey];
-        return (<span> {timeSince(new Date(timestampToInt(msg.timestamp)*1000))}: {msg.content} <br/></span>);
+        return (<span key={key}> {timeSince(new Date(timestampToInt(msg.timestamp)*1000))}: {msg.content} <br/></span>);
       }).filter(m => m !== undefined || m !== '').slice(0,2);
 
       if (msgPreviews == null || msgPreviews.length == 0) {
