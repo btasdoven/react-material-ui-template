@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import SortIcon from 'material-ui/svg-icons/action/swap-vert';
 import styles from '../styles/UserList.scss';
-import SmartTable from './SmartTable/SmartTable';
+import SmartTable from './Common/SmartTable/SmartTable';
 
 const enhance = compose(
   firebaseConnect([{ path: 'dietitians' }]),

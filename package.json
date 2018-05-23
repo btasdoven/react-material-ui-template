@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@livechat/ui-kit": "^0.1.0",
     "antd": "^3.4.2",
     "babel-polyfill": "^6.26.0",
     "chat-template": "0.0.26",

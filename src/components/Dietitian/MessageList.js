@@ -16,7 +16,10 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
 import Divider from 'material-ui/Divider';
+import FontIcon from 'material-ui/FontIcon';
+import RaisedButton from 'material-ui/RaisedButton';
 import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from '../Login/AdminRoute';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
 const iconButtonElement = (
   <IconButton
@@ -61,67 +64,6 @@ function timestampToInt(ts){
   }
 
   return t;
-}
-
-class ChatSendMessage extends React.PureComponent {
-
-  constructor(props) {
-    super(props)
-
-    this.sendMessage = this.sendMessage.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.updateInputValue = this.updateInputValue.bind(this);
-
-    this.state = { inputs: {}};
-  }
-
-  sendMessage(evt, chatKey) {
-    if (this.state.inputs[chatKey] === '') {
-        return;
-    }
-
-    var toId = this.props.chats[chatKey].dietitianId == "chatfeedback"
-      ? this.props.chats[chatKey].userId
-      : this.props.chats[chatKey].dietitianId;
-
-    this.props.firebase.push(`/messages/${chatKey}`, {
-      type: "text",
-      content: this.state.inputs[chatKey],
-      isSeen: false,
-      timestamp: parseInt(new Date().getTime()/1000),
-      toId: toId,
-      fromId: 'chatfeedback'
-    });
-
-    this.state.inputs[chatKey] = "";
-    this.setState(this.state);
-  }
-
-  updateInputValue(key, {target}) {
-    this.setState(({inputs}) => {
-      inputs[key] = target.value;
-      return inputs;
-    });
-  }
-
-  handleKeyPress(chatKey, {key}) {
-    if (key === 'Enter') {
-        this.sendMessage(null, chatKey);
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        <TextField
-          hintText="Mesaj yaz" 
-          value={this.state.inputs[this.props.chatKey] || ""}
-          onKeyPress={this.handleKeyPress.bind(this, this.props.chatKey)}
-          onChange={this.updateInputValue.bind(this, this.props.chatKey)}/>
-        <FlatButton label="Gönder" onClick={(evt) => this.sendMessage(evt, this.props.chatKey)}/>
-      </div>
-    );
-  }
 }
 
 class MessageList extends Component {
@@ -188,6 +130,7 @@ class MessageList extends Component {
               msgPreviews     
             }
             secondaryTextLines={1}
+            onClick={() => this.props.history.push("/me/messages/" + key)}
           />
           <Divider />
         </div>
@@ -195,9 +138,20 @@ class MessageList extends Component {
     });
 
     return (
-      <List>
-        {cards.slice(0, 25)}
-      </List>
+      <div> 
+        <Toolbar>
+          <ToolbarGroup>
+            <ToolbarTitle firstChild={true} text="Mesajlarım" />
+            <FontIcon className="muidocs-icon-custom-sort" />
+            <ToolbarSeparator />
+            <RaisedButton label="Yeni Mesaj Gönder" primary={true} />
+          </ToolbarGroup>
+        </Toolbar>
+
+        <List>
+          {cards.slice(0, 25)}
+        </List>
+      </div>
     );
   }
 }

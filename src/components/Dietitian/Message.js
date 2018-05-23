@@ -18,6 +18,11 @@ import IconMenu from 'material-ui/IconMenu';
 import Divider from 'material-ui/Divider';
 import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from '../Login/AdminRoute';
 
+import { ThemeProvider, defaultTheme, 
+  TextComposer, Row, AddIcon, TextInput, SendButton, Fill, Fit,
+  MessageList, MessageGroup, MessageMedia, MessageTitle, MessageText, Message, MessageButton, MessageButtons } from '@livechat/ui-kit'
+
+
 const iconButtonElement = (
   <IconButton
     touch={true}
@@ -53,84 +58,103 @@ const enhance = compose(
   )
 );
 
-function timestampToInt(ts){
-  var t = parseInt(ts) || 0;
-
-  if (t < 1485592994) {
-    return t*10;
-  }
-
-  return t;
-}
-
-class ChatSendMessage extends React.PureComponent {
-
-  constructor(props) {
-    super(props)
-
-    this.sendMessage = this.sendMessage.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.updateInputValue = this.updateInputValue.bind(this);
-
-    this.state = { inputs: {}};
-  }
-
-  sendMessage(evt, chatKey) {
-    if (this.state.inputs[chatKey] === '') {
-        return;
-    }
-
-    var toId = this.props.chats[chatKey].dietitianId == "chatfeedback"
-      ? this.props.chats[chatKey].userId
-      : this.props.chats[chatKey].dietitianId;
-
-    this.props.firebase.push(`/messages/${chatKey}`, {
-      type: "text",
-      content: this.state.inputs[chatKey],
-      isSeen: false,
-      timestamp: parseInt(new Date().getTime()/1000),
-      toId: toId,
-      fromId: 'chatfeedback'
-    });
-
-    this.state.inputs[chatKey] = "";
-    this.setState(this.state);
-  }
-
-  updateInputValue(key, {target}) {
-    this.setState(({inputs}) => {
-      inputs[key] = target.value;
-      return inputs;
-    });
-  }
-
-  handleKeyPress(chatKey, {key}) {
-    if (key === 'Enter') {
-        this.sendMessage(null, chatKey);
-    }
-  }
+class MessageWrapper extends Component {
 
   render() {
+
     return (
-      <div>
-        <TextField
-          hintText="Mesaj yaz" 
-          value={this.state.inputs[this.props.chatKey] || ""}
-          onKeyPress={this.handleKeyPress.bind(this, this.props.chatKey)}
-          onChange={this.updateInputValue.bind(this, this.props.chatKey)}/>
-        <FlatButton label="Gönder" onClick={(evt) => this.sendMessage(evt, this.props.chatKey)}/>
-      </div>
+      <ThemeProvider theme={defaultTheme}>
+       <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+          }}
+        >
+        <div
+          style={{
+            flexGrow: 1,
+            minHeight: 0,
+            height: '100%',
+          }}
+        >
+          <MessageList active >
+            <MessageGroup
+              avatar="https://livechat.s3.amazonaws.com/default/avatars/male_8.jpg"
+              onlyFirstWithMeta
+            >
+              <Message authorName="Jon Smith" date="21:37" showMetaOnClick>
+                <MessageMedia>
+                  <img src="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png" />
+                </MessageMedia>
+              </Message>
+              <Message authorName="Jon Smith" date="21:37">
+                <MessageTitle title="Message title" subtitle="24h" />
+                <MessageMedia>
+                  <img src="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png" />
+                </MessageMedia>
+                <MessageText>
+                  The fastest way to help your customers - start chatting with visitors
+                </MessageText>
+                <MessageText>
+                  The fastest way to help your customers - start chatting with visitors
+                  who need your help using a free 30-day trial.
+                </MessageText>
+              </Message>
+              <Message date="21:38" authorName="Jon Smith">
+                <MessageText>Hi! I would like to buy those shoes</MessageText>
+              </Message>
+            </MessageGroup>
+            <MessageGroup onlyFirstWithMeta>
+              <Message date="21:38" isOwn={true} authorName="Visitor">
+                <MessageText>
+                  I love them
+                  sooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+                  much!
+                </MessageText>
+              </Message>
+              <Message date="21:38" isOwn={true} authorName="Visitor">
+                <MessageText>This helps me a lot</MessageText>
+              </Message>
+            </MessageGroup>
+            <MessageGroup
+              avatar="https://livechat.s3.amazonaws.com/default/avatars/male_8.jpg"
+              onlyFirstWithMeta
+            >
+              <Message authorName="Jon Smith" date="21:37">
+                <MessageText>No problem!</MessageText>
+              </Message>
+              <Message
+                authorName="Jon Smith"
+                imageUrl="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png"
+                date="21:39"
+              >
+                <MessageText>
+                  The fastest way to help your customers - start chatting with visitors
+                  who need your help using a free 30-day trial.
+                </MessageText>
+              </Message>
+              <Message authorName="Jon Smith" date="21:39">
+                <MessageMedia>
+                  <img src="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png" />
+                </MessageMedia>
+              </Message>
+            </MessageGroup>
+          </MessageList>
+          </div>
+          <TextComposer defaultValue="Hello, can you help me?" style={{bottom: 0}}>
+            <Row align="center">
+              <Fit>
+                <IconButton><AddIcon/></IconButton>
+              </Fit>
+              <Fill><TextInput/></Fill>
+              <Fit><SendButton/></Fit>
+            </Row>
+          </TextComposer>
+        </div>
+      </ThemeProvider>
     );
-  }
-}
 
-class MessageList extends Component {
-
-  constructor(props) {
-      super(props);
-  }
-
-  render() {
     var chats = this.props.chats;
     var messages = this.props.messages;
     var users = this.props.users;
@@ -201,23 +225,6 @@ class MessageList extends Component {
           />
           <Divider />
         </div>
-        // <Card key={key} className="card">
-        //   <CardHeader 
-        //                   title={u1.name + " - " + u2.name}
-        //                   subtitle={msgContents[msgContents.length-1]}
-        //                   actAsExpander={true}
-        //                   showExpandableButton={true}
-        //                   avatar={u2.profileImageUrl || u1.profileImageUrl}
-        //               />
-        //   <CardText expandable={true}>
-        //     {msgContents}
-        //   </CardText>
-        //   <CardActions expandable={true}>
-        //     <ChatSendMessage
-        //       chatKey={key} firebase={this.props.firebase} chats={this.props.chats}
-        //       />
-        //   </CardActions>
-        // </Card>
       );
     });
 
@@ -227,6 +234,16 @@ class MessageList extends Component {
       </List>
     );
   }
+}
+
+function timestampToInt(ts){
+  var t = parseInt(ts) || 0;
+
+  if (t < 1485592994) {
+    return t*10;
+  }
+
+  return t;
 }
 
 function timeSince(date) {
@@ -256,4 +273,4 @@ function timeSince(date) {
   return Math.floor(seconds) + " saniye önce";
 }
 
-export default enhance(MessageList)
+export default enhance(MessageWrapper)

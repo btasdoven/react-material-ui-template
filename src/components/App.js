@@ -35,8 +35,43 @@ import Subheader from 'material-ui/Subheader';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Badge from 'material-ui/Badge';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import PropTypes from 'prop-types';
 
 let SelectableList = makeSelectable(List);
+
+function wrapState(ComposedComponent) {
+    return class SelectableList extends Component {
+      static propTypes = {
+        children: PropTypes.node.isRequired,
+        defaultValue: PropTypes.string.isRequired,
+      };
+  
+      componentWillMount() {
+        this.setState({
+          selectedIndex: this.props.defaultValue,
+        });
+      }
+  
+      handleRequestChange = (event, index) => {
+        this.setState({
+          selectedIndex: index,
+        });
+      };
+  
+      render() {
+        return (
+          <ComposedComponent
+            value={this.state.selectedIndex}
+            onChange={this.handleRequestChange}
+          >
+            {this.props.children}
+          </ComposedComponent>
+        );
+      }
+    };
+}
+
+SelectableList = wrapState(SelectableList);
 
 class App extends Component {
   render() {
@@ -62,50 +97,58 @@ class App extends Component {
       <div>
           <ResponsiveDrawer>
             <ProfileMenuItem />
-            <List>
-              <ListItem 
-                  containerElement={<Link to='/'/>} 
-                  primaryText="Ana Sayfa" 
-                  leftIcon={<FontIcon className="material-icons">dashboard</FontIcon>}
-                  />
+            <SelectableList defaultValue={this.props.location.pathname}>
                 <ListItem 
+                    value='/'
+                    containerElement={<Link to='/'/>} 
+                    primaryText="Ana Sayfa" 
+                    leftIcon={<FontIcon className="material-icons">dashboard</FontIcon>}
+                    />
+                <ListItem 
+                    value='/me/clients'
                     containerElement={<Link to='/me/clients'/>} 
                     primaryText="Danışanlarım" 
                     leftIcon={<FontIcon className="material-icons">people</FontIcon>}
-                    />
+                    />              
                 <ListItem 
+                    value='/me/messages'
                     containerElement={<Link to='/me/messages'/>} 
                     primaryText="Mesajlarım" 
                     leftIcon={<FontIcon className="material-icons">email</FontIcon>}
-                    rightIcon={<Badge badgeContent={2} secondary={true}></Badge>}
+                    rightIcon={<Badge badgeContent={2} secondary={true}></Badge>} 
                     />
                 <ListItem 
+                    value='/me/agenda'
                     containerElement={<Link to='/me/agenda'/>} 
                     primaryText="Randevularım" 
                     leftIcon={<FontIcon className="material-icons">calendar_today</FontIcon>}
                     />
                 <Divider/>
                 <ListItem 
+                    value='/me'
                     containerElement={<Link to='/me'/>} 
                     primaryText="Profilim" 
                     leftIcon={<FontIcon className="material-icons">person</FontIcon>}
                     />
                 <ListItem 
+                    value='/me/finance'
                     containerElement={<Link to='/me/finance'/>}
                     primaryText="Finanslarım" 
                     leftIcon={<FontIcon className="material-icons">credit_card</FontIcon>}
                     />
                 <ListItem 
+                    value='/me/diets'
                     containerElement={<Link to='/me/diets'/>}
                     primaryText="Kayıtlı Diyetlerim" 
                     leftIcon={<FontIcon className="material-icons">assignment</FontIcon>}
                     />
                 <ListItem 
+                    value='/me/settings'
                     containerElement={<Link to='/me/settings'/>}
                     primaryText="Ayarlar" 
                     leftIcon={<FontIcon className="material-icons">settings</FontIcon>}
                     />
-            </List>
+            </SelectableList>
             {isAdmin  
                 ? <List>
                     <Subheader>Admin Baglantilari</Subheader>
