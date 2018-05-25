@@ -16,7 +16,11 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
 import Divider from 'material-ui/Divider';
+import FontIcon from 'material-ui/FontIcon';
+import RaisedButton from 'material-ui/RaisedButton';
 import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from '../Login/AdminRoute';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import NavigationClose from 'material-ui/svg-icons/navigation/chevron-left';
 
 import { ThemeProvider, defaultTheme, 
   TextComposer, Row, AddIcon, TextInput, SendButton, Fill, Fit,
@@ -62,97 +66,146 @@ class MessageWrapper extends Component {
 
   render() {
 
+    if (this.props.messages === undefined || this.props.users === undefined || 
+      this.props.dietitians == undefined || this.props.chats === undefined) {
+      return ( <LoadingIcon/> );
+    }
+
+    var messageKey = this.props.messageId || this.props.match.params.messageId;
+    var showHeader = this.props.showHeader === undefined ? true : this.props.showHeader;
+
+    var messages = this.props.messages[messageKey];
+
+    var myUid = getFirebaseDietitianId(this.props.auth.uid);
+    var chat = this.props.chats[messageKey];
+    var partnerUserId = chat.dietitianId == myUid ? chat.userId : chat.dietitianId;
+    var partnerUser = this.props.users[partnerUserId];
+
+    var messageHtml = Object.keys(messages).map(msgKey => {
+      const msg = messages[msgKey];
+
+      var u1 = this.props.dietitians[msg.fromId] || this.props.users[msg.fromId];
+      var u2 = this.props.dietitians[msg.toId] || this.props.users[msg.toId];
+
+      return (
+        <MessageGroup
+          key={msgKey}
+          avatar={u1.profileImageUrl || "/static/default_avatar.png"}
+          onlyFirstWithMeta
+        >
+          <Message isOwn={msg.fromId === myUid} date={timeSince(new Date(timestampToInt(msg.timestamp)*1000))}>
+            <MessageText>
+              {msg.content}
+            </MessageText>
+          </Message>
+        </MessageGroup>
+      );
+    })
+
+    var toolbarHtml = 
+      <Toolbar>
+        <ToolbarGroup firstChild={true}>
+          <IconButton onClick={() => this.props.history.push('/me/messages')}><NavigationClose /></IconButton>
+          <ToolbarTitle firstChild={true} text={partnerUser.name} />
+          <ToolbarSeparator />
+        </ToolbarGroup>
+      </Toolbar>;
+
     return (
-      <ThemeProvider theme={defaultTheme}>
-       <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-          }}
-        >
-        <div
-          style={{
-            flexGrow: 1,
-            minHeight: 0,
-            height: '100%',
-          }}
-        >
-          <MessageList active >
-            <MessageGroup
-              avatar="https://livechat.s3.amazonaws.com/default/avatars/male_8.jpg"
-              onlyFirstWithMeta
-            >
-              <Message authorName="Jon Smith" date="21:37" showMetaOnClick>
-                <MessageMedia>
-                  <img src="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png" />
-                </MessageMedia>
-              </Message>
-              <Message authorName="Jon Smith" date="21:37">
-                <MessageTitle title="Message title" subtitle="24h" />
-                <MessageMedia>
-                  <img src="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png" />
-                </MessageMedia>
-                <MessageText>
-                  The fastest way to help your customers - start chatting with visitors
-                </MessageText>
-                <MessageText>
-                  The fastest way to help your customers - start chatting with visitors
-                  who need your help using a free 30-day trial.
-                </MessageText>
-              </Message>
-              <Message date="21:38" authorName="Jon Smith">
-                <MessageText>Hi! I would like to buy those shoes</MessageText>
-              </Message>
-            </MessageGroup>
-            <MessageGroup onlyFirstWithMeta>
-              <Message date="21:38" isOwn={true} authorName="Visitor">
-                <MessageText>
-                  I love them
-                  sooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-                  much!
-                </MessageText>
-              </Message>
-              <Message date="21:38" isOwn={true} authorName="Visitor">
-                <MessageText>This helps me a lot</MessageText>
-              </Message>
-            </MessageGroup>
-            <MessageGroup
-              avatar="https://livechat.s3.amazonaws.com/default/avatars/male_8.jpg"
-              onlyFirstWithMeta
-            >
-              <Message authorName="Jon Smith" date="21:37">
-                <MessageText>No problem!</MessageText>
-              </Message>
-              <Message
-                authorName="Jon Smith"
-                imageUrl="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png"
-                date="21:39"
+        <ThemeProvider theme={defaultTheme}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+            }}
+          >
+          {
+            showHeader ? toolbarHtml : <div/>
+          }
+          <div
+            style={{
+              flexGrow: 1,
+              minHeight: 0,
+              height: '100%',
+            }}
+          >
+            <MessageList active >
+              {messageHtml}
+              {/* <MessageGroup
+                avatar="https://livechat.s3.amazonaws.com/default/avatars/male_8.jpg"
+                onlyFirstWithMeta
               >
-                <MessageText>
-                  The fastest way to help your customers - start chatting with visitors
-                  who need your help using a free 30-day trial.
-                </MessageText>
-              </Message>
-              <Message authorName="Jon Smith" date="21:39">
-                <MessageMedia>
-                  <img src="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png" />
-                </MessageMedia>
-              </Message>
-            </MessageGroup>
-          </MessageList>
+                <Message authorName="Jon Smith" date="21:37" showMetaOnClick>
+                  <MessageMedia>
+                    <img src="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png" />
+                  </MessageMedia>
+                </Message>
+                <Message authorName="Jon Smith" date="21:37">
+                  <MessageTitle title="Message title" subtitle="24h" />
+                  <MessageMedia>
+                    <img src="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png" />
+                  </MessageMedia>
+                  <MessageText>
+                    The fastest way to help your customers - start chatting with visitors
+                  </MessageText>
+                  <MessageText>
+                    The fastest way to help your customers - start chatting with visitors
+                    who need your help using a free 30-day trial.
+                  </MessageText>
+                </Message>
+                <Message date="21:38" authorName="Jon Smith">
+                  <MessageText>Hi! I would like to buy those shoes</MessageText>
+                </Message>
+              </MessageGroup>
+              <MessageGroup onlyFirstWithMeta>
+                <Message date="21:38" isOwn={true} authorName="Visitor">
+                  <MessageText>
+                    I love them
+                    sooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+                    much!
+                  </MessageText>
+                </Message>
+                <Message date="21:38" isOwn={true} authorName="Visitor">
+                  <MessageText>This helps me a lot</MessageText>
+                </Message>
+              </MessageGroup>
+              <MessageGroup
+                avatar="https://livechat.s3.amazonaws.com/default/avatars/male_8.jpg"
+                onlyFirstWithMeta
+              >
+                <Message authorName="Jon Smith" date="21:37">
+                  <MessageText>No problem!</MessageText>
+                </Message>
+                <Message
+                  authorName="Jon Smith"
+                  imageUrl="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png"
+                  date="21:39"
+                >
+                  <MessageText>
+                    The fastest way to help your customers - start chatting with visitors
+                    who need your help using a free 30-day trial.
+                  </MessageText>
+                </Message>
+                <Message authorName="Jon Smith" date="21:39">
+                  <MessageMedia>
+                    <img src="https://static.staging.livechatinc.com/1520/P10B78E30V/dfd1830ebb68b4eefe6432d7ac2be2be/Cat-BusinessSidekick_Wallpapers.png" />
+                  </MessageMedia>
+                </Message>
+              </MessageGroup> */}
+            </MessageList>
+            </div>
+            <TextComposer style={{bottom: 0}}>
+              <Row align="center">
+                <Fit>
+                  <IconButton><AddIcon/></IconButton>
+                </Fit>
+                <Fill><TextInput placeholder="Mesaj yaz..."/></Fill>
+                <Fit><SendButton/></Fit>
+              </Row>
+            </TextComposer>
           </div>
-          <TextComposer defaultValue="Hello, can you help me?" style={{bottom: 0}}>
-            <Row align="center">
-              <Fit>
-                <IconButton><AddIcon/></IconButton>
-              </Fit>
-              <Fill><TextInput/></Fill>
-              <Fit><SendButton/></Fit>
-            </Row>
-          </TextComposer>
-        </div>
-      </ThemeProvider>
+        </ThemeProvider>
     );
 
     var chats = this.props.chats;

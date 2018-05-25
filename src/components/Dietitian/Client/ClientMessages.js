@@ -30,6 +30,8 @@ import Chip from 'material-ui/Chip';
 import AutoComplete from 'material-ui/AutoComplete';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
+import MessageWrapper from '../Message';
+
 import '../../../styles/MessageList.css'
 import ClientDetails from './ClientDetails'
 import ClientDietPlan from './ClientDietPlan'
@@ -133,8 +135,7 @@ class ClientMessages extends React.PureComponent {
     }
     
     return (
-      <div>
-      </div>
+      <MessageWrapper messageId="-L6N07PGPPClDlu9ASoo" showHeader={false}/>
     );
   }
 }

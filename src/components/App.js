@@ -53,7 +53,7 @@ function wrapState(ComposedComponent) {
       }
   
       handleRequestChange = (event, index) => {
-        this.setState({
+        this.setState({ 
           selectedIndex: index,
         });
       };
