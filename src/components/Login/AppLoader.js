@@ -19,7 +19,9 @@ import ProfileMenuItem from './ProfileMenuItem';
 import TestLoginButton from './TestLoginButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
-//textAlign: "center", margin: "auto", marginTop: "25%", width: "25em"
+import GoogleAnalytics from 'react-ga';
+
+GoogleAnalytics.initialize('UA-119872360-1');
 
 class AppLoader extends Component {
   constructor(props, context) {
@@ -31,20 +33,21 @@ class AppLoader extends Component {
 
     if (this.props.location.search.indexOf("?email=") == 0) {
       this.demoEmail = this.props.location.search.substring(7).replace('.', '?');
-      this.props.firebase.database().ref().child('portal_demo_logins/opened').update({ [this.demoEmail] : true });
+      this.props.firebase.database().ref().child('portal_demo_logins/opened').update({ [this.demoEmail] : Date.now() });
+      GoogleAnalytics.pageview(window.location.hostname + this.props.location.pathname + this.props.location.search);
     }
   }
 
   login(event) {
     if (this.demoEmail !== undefined) {
-      this.props.firebase.database().ref().child('portal_demo_logins/logged_in').update({ [this.demoEmail] : true });
+      this.props.firebase.database().ref().child('portal_demo_logins/logged_in').update({ [this.demoEmail] : Date.now() });
+      GoogleAnalytics.pageview(window.location.hostname + this.props.location.pathname + this.props.location.search + '&loggedIn=true');
     }
     
     this.props.firebase.login({ email: 'diyetkocumtest@diyetkocum.net', password: 'diyetkocumtest' });
   }
 
   receiveMessage(event) {
-    console.log(event);
     // Do we trust the sender of this message?  (might be
     // different from what we originally opened, for example).
     // if (event.origin !== "https://diyetkocum.net") {

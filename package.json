@@ -30,6 +30,7 @@
     "react-event-timeline": "^1.5.1",
     "react-flexbox-grid": "^2.0.0",
     "react-fontawesome": "^1.6.1",
+    "react-ga": "^2.5.3",
     "react-google-button": "^0.5.1",
     "react-instagram-login": "^1.2.0",
     "react-moment": "^0.7.0",

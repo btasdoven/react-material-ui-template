@@ -7,24 +7,30 @@ import LoadingIcon from '../Common/LoadingIcon';
 
 import { Route, Redirect } from 'react-router-dom';
 
+import withTracker from './PageTracker'
+
+const TrackedRoute = withTracker(Route)
+const TrackedUnauthRoute = withTracker(Route, {unauth: 'AdminRoute'})
+const TrackedNonAdminRoute = withTracker(Route, {nonadmin: 'AdminRoute'})
+
 const AdminRoute = ({ component: Component, auth, ...rest }) => (
   !isLoaded(auth)
     ? <Route {...rest} render={(props) => (<LoadingIcon />)} />
     : isEmpty(auth)
-      ? <Route {...rest} render={(props) => (
+      ? <TrackedUnauthRoute {...rest} render={(props) => (
           <Redirect to={{
             pathname: '/login',
             state: { from: props.location }
           }} />
         )} />
       : !isFirebaseAdmin(auth)
-        ? <Route {...rest} render={(props) => (
+        ? <TrackedNonAdminRoute {...rest} render={(props) => (
             <Redirect to={{
               pathname: '/',
               state: { from: props.location }
             }} />
           )} />
-        :<Route {...rest} render={(props) => (<Component {...props} />)} />
+        : <TrackedRoute {...rest} render={(props) => (<Component {...props} />)} />
 )
 
 export const isFirebaseAdmin = function(auth) {
