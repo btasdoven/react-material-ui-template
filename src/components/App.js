@@ -10,7 +10,7 @@ import LoadingIcon from './Common/LoadingIcon';
 import { Switch, Route, Link } from 'react-router-dom';
 import MenuItem from 'material-ui/MenuItem';
 import FontIcon from 'material-ui/FontIcon';
-import { ResponsiveDrawer, BodyContainer } from 'material-ui-responsive-drawer'
+import { ResponsiveDrawer, BodyContainer, ResponsiveAppBar } from 'material-ui-responsive-drawer'
 
 import PrivateRoute from './Login/PrivateRoute';
 import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from './Login/AdminRoute';
@@ -35,6 +35,7 @@ import Subheader from 'material-ui/Subheader';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Badge from 'material-ui/Badge';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import FlatButton from 'material-ui/FlatButton';
 import PropTypes from 'prop-types';
 
 let SelectableList = makeSelectable(List);
@@ -172,7 +173,7 @@ class App extends Component {
             }
           </ResponsiveDrawer>
           <BodyContainer>
-              <Switch>
+            <Switch>
                 <PrivateRoute exact path='/' component={Dashboard}/>
 
                 <PrivateRoute exact path='/me' component={Profile}/>
@@ -190,7 +191,7 @@ class App extends Component {
                 <AdminRoute path='/dietitians' component={DietitianList}/>
                 <AdminRoute path='/users' component={UserList}/>
                 <AdminRoute path='/messages' component={MessageList}/>
-              </Switch>
+            </Switch>
           </BodyContainer>
       </div>
     )
