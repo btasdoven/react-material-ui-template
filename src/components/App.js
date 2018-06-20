@@ -10,7 +10,7 @@ import LoadingIcon from './Common/LoadingIcon';
 import { Switch, Route, Link } from 'react-router-dom';
 import MenuItem from 'material-ui/MenuItem';
 import FontIcon from 'material-ui/FontIcon';
-import { ResponsiveDrawer, BodyContainer, ResponsiveAppBar } from 'material-ui-responsive-drawer'
+import { ResponsiveDrawer, BodyContainer } from 'material-ui-responsive-drawer'
 
 import PrivateRoute from './Login/PrivateRoute';
 import AdminRoute, { isFirebaseAdmin, getFirebaseDietitianId } from './Login/AdminRoute';

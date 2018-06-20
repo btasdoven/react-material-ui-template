@@ -27,6 +27,8 @@ import SelectField from 'material-ui/SelectField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import { getFirebaseDietitianId } from '../Login/AdminRoute';
 
+import ProfileAppBar from '../Common/ProfileAppBar'
+
 import '../../styles/MessageList.css'
 import LoadingIcon from '../Common/LoadingIcon';
 import {indigo500} from 'material-ui/styles/colors';
@@ -173,12 +175,13 @@ class Client extends React.PureComponent {
     
     return (
       <div>
-        <Toolbar>
+        <ProfileAppBar title="Profilim"/>
+        {/* <Toolbar>
           <ToolbarGroup firstChild={true}>
             <Avatar style={{marginRight: "25px"}} src={"/static/default_avatar.png"} />
             <ToolbarTitle text={u.name} />
           </ToolbarGroup>
-        </Toolbar>
+        </Toolbar> */}
         {/* <AppBar
           title={
               <ListItem

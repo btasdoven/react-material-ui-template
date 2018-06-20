@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {deepOrange500} from 'material-ui/styles/colors';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProviderV0 from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'; // v1.x
+import purple from '@material-ui/core/colors/purple';
 
 import './styles/index.css';
 import AppLoader from './components/Login/AppLoader';
-import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import injectTapEventPlugin from 'react-tap-event-plugin';
   
@@ -48,6 +49,8 @@ const muiTheme = getMuiTheme({
     },
   });
 
+const muiThemeNext = createMuiTheme();
+
 // const Content = (props) => (
 //     <div>
 //         <ResponsiveAppBar
@@ -60,11 +63,13 @@ const muiTheme = getMuiTheme({
    
 ReactDOM.render((
     <Provider store={store}>
-        <MuiThemeProvider muiTheme={muiTheme}>
+      <MuiThemeProvider theme={muiThemeNext}>
+        <MuiThemeProviderV0 muiTheme={muiTheme}>
             <BrowserRouter>
                 <AppLoader />
             </BrowserRouter>
-        </MuiThemeProvider>
+        </MuiThemeProviderV0>
+      </MuiThemeProvider>
     </Provider>
 ), document.getElementById('root'))
 

@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+import { firebaseConnect } from 'react-redux-firebase'
 import LoadingIcon from '../Common/LoadingIcon'
 import ProfileAppBar from '../Common/ProfileAppBar'
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardHeader, CardContent } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import TextField from 'material-ui/TextField';
 import FontIcon from 'material-ui/FontIcon';
-import AppBar from 'material-ui/AppBar';
-import Paper from 'material-ui/Paper';
-import { ResponsiveAppBar } from 'material-ui-responsive-drawer';
-import Avatar from 'material-ui/Avatar';
 
 class Dashboard extends Component {
 
@@ -24,7 +19,7 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <ProfileAppBar />
+        <ProfileAppBar title="Ana Sayfa"/>
         <Grid fluid style={{marginTop: 12}}>
           <Row>
             <Col xs={12} md={4} lg={4}>
@@ -41,6 +36,15 @@ class Dashboard extends Component {
               </Card>
             </Col>
             <Col xs={12} md={4} lg={4}>
+              <Card>
+                <CardHeader
+                  title="Danışanlarına bildirim gönder"
+                  avatar={<FontIcon className="material-icons">notification_important</FontIcon>}
+                />
+                <CardActions>
+                    <FlatButton label="Yeni Danışan Profili Oluştur"/>
+                </CardActions>
+              </Card>
             </Col>
             <Col xs={12} md={4} lg={4}>
             </Col>

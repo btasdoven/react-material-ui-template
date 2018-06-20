@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import '../../styles/MessageList.css'
 import LoadingIcon from '../Common/LoadingIcon';
+import ProfileAppBar from '../Common/ProfileAppBar';
 import {List, ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import MenuItem from 'material-ui/MenuItem';
@@ -139,14 +140,15 @@ class MessageList extends Component {
 
     return (
       <div> 
-        <Toolbar>
+        <ProfileAppBar title="Mesajlarım"/>
+        {/* <Toolbar>
           <ToolbarGroup>
             <ToolbarTitle firstChild={true} text="Mesajlarım" />
             <FontIcon className="muidocs-icon-custom-sort" />
             <ToolbarSeparator />
             <RaisedButton label="Yeni Mesaj Gönder" primary={true} />
           </ToolbarGroup>
-        </Toolbar>
+        </Toolbar> */}
 
         <List>
           {cards.slice(0, 25)}

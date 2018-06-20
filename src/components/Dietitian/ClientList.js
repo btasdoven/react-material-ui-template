@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firebase, firebaseConnect, populate } from 'react-redux-firebase'
-import {Card, CardTitle, CardText, CardHeader, CardActions} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import FontIcon from 'material-ui/FontIcon';
+import { firebaseConnect } from 'react-redux-firebase'
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import AppBar from 'material-ui/AppBar';
-import { Grid, Row, Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
-import { Link } from 'react-router-dom';
 
 import '../../styles/MessageList.css'
 import LoadingIcon from '../Common/LoadingIcon';
+import ProfileAppBar from '../Common/ProfileAppBar';
 
 const enhance = compose(
   firebaseConnect([
@@ -55,12 +50,10 @@ class ClientList extends Component {
 
     return (
       <div>
-        <AppBar
-          title="Danisanlarim"
-        />
-      <List>
-        {cards}
-      </List>
+        <ProfileAppBar title="Danışanlarım"/>
+        <List>
+          {cards}
+        </List>
       </div>
     );
   }
