@@ -18,6 +18,7 @@
     "material-ui-responsive-drawer": "^1.19.4",
     "material-ui-search-bar": "^0.4.1",
     "material-ui-sortable-table": "github:vorlov/material-ui-sortable-table",
+    "mdi-react": "^3.4.0",
     "module": "^1.2.5",
     "moment": "^2.22.1",
     "mui-react-phone-input": "0.0.10",
